@@ -1,31 +1,36 @@
 ## 一些脚本，可能没用
 
-```
-auto-login-debian-tty
-```
 自动登录root
+```
+auto-login-debian-tty.sh
+```
 
-```
-enx-dhcp
-```
+
 enx的网卡自动dhcp
+```
+enx-dhcp.sh
+```
 
-```
-genwifi
-```
+
 生成wifi连接配置
+```
+genwifi.sh
+```
 
+
+自动tmux
 ```
 tmux.sh
 ```
-自动tmux
 
-```
-genssl
-```
+
 自签证书
+```
+genssl.sh
+```
 
-```
-remove-image
-```
+
 删除docker镜像
+```
+remove-image.sh
+```
