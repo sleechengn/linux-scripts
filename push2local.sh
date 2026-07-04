@@ -16,5 +16,4 @@ else
 		docker tag $IMN 192.168.13.73:5000/$repo-$(arch)
 		docker push 192.168.13.73:5000/$repo-$(arch)
 	fi
-	
 fi
