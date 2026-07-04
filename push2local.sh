@@ -9,9 +9,12 @@ else
     tag=$(echo $IMN|awk -F ':' '{print $2}')
 	echo "repo: $repo"
 	echo "tag: $tag"
-	if [ ! "$tag" ]; then
-		tag="latest"
+	if [ "$tag" ]; then
+		docker tag $IMN 192.168.13.73:5000/$repo-$(arch):$tag
+		docker push 192.168.13.73:5000/$repo-$(arch):$tag
+	else
+		docker tag $IMN 192.168.13.73:5000/$repo-$(arch)
+		docker push 192.168.13.73:5000/$repo-$(arch)
 	fi
-	docker tag $IMN 192.168.13.73:5000/$repo-$(arch):$tag
-	docker push 192.168.13.73:5000/$repo-$(arch):$tag
+	
 fi
