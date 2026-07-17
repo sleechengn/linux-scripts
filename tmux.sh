@@ -8,7 +8,11 @@ if [ ! "$(which tmux)" ]; then
                 if [ "$(which apk)" ]; then
                         apk add tmux fish
                         else
-                        exit 1
+                                if [ "$(which pacman)" ]; then
+                                        pacman --noconfirm -Sy fish tmux
+                                else
+                                        exit 1
+                                fi
                 fi
         fi
 
