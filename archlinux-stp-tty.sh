@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-apt install -y psmisc curl aria2
-apt install -y fish
+pacman -S --noconfirm psmisc curl aria2 fish
 mkdir -p /opt/ttyd
 cd /opt/ttyd
 DOWNLOAD=$(curl -s https://api.github.com/repos/tsl0922/ttyd/releases/latest | grep browser_download_url |grep ttyd.x86_64| cut -d'"' -f4)
