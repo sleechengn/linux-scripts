@@ -24,4 +24,6 @@ if [ "$SSID" ]; then
                         sleep 1
                 fi
         done
+else
+    echo "not found $NAME"
 fi
