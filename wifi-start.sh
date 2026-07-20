@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+apt install iw isc-dhcp-client wpasupplicant iptables -y
 IFNAME=$(iw dev|grep Interface|awk '{print $2}')
 
 ip link set $IFNAME up
