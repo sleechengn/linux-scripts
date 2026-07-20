@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-IFNAME="wlp3s0"
+IFNAME=$(iw dev|grep Interface|awk '{print $2}')
 
 ip link set $IFNAME up
 #wpa_cli -i $IFNAME disconnect
