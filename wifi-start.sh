@@ -30,8 +30,12 @@ if [ "$SSID" ]; then
         SETTING_LOOP=1
         while [ $SETTING_LOOP -eq 1 ]; do
                 if [ "$(iw dev $IFNAME link|grep SSID)" ]; then
+                        echo 1 > /proc/sys/net/ipv4/ip_forward
                         echo "connected"
                         dhclient $IFNAME
+                        if [ ! "$(iptables -t nat -nvL --line-numbers|grep MASQUERADE)" ]; then
+                            iptables -t nat -A POSTROUTING -j MASQUERADE
+                        fi
                         SETTING_LOOP=0
                 else
                         sleep 1
