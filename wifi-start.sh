@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 apt install iw isc-dhcp-client wpasupplicant iptables -y
+NAME="SYJD-8306"
+PASSWD="88888888"
 IFNAME=$(iw dev|grep Interface|awk '{print $2}')
 
 ip link set $IFNAME up
 #wpa_cli -i $IFNAME disconnect
 #iw dev $IFNAME disconnect
-SSID=$(iw $IFNAME scan|grep SYJD|grep 8306|awk '{print $2}')
+SSID=$(iw $IFNAME scan|grep -F "$NAME"|awk '{print $2}')
 echo "SSID=$SSID"
 
 if [ "$SSID" ]; then
-        wpa_passphrase $SSID 88888888 > /tmp/wpa_supplicant.conf
+        wpa_passphrase $SSID $PASSWD > /tmp/wpa_supplicant.conf
         wpa_supplicant -B -i $IFNAME -c /tmp/wpa_supplicant.conf
 
         SETTING_LOOP=1
