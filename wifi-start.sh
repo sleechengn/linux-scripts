@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 apt install iw isc-dhcp-client wpasupplicant iptables -y
 
+echo "usage:"
+echo "./wifi-start.sh SSID PASSWORD"
+
 NAME="SYJD-8306"
 if [ "$1" ]; then
     NAME="$1"
