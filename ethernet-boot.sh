@@ -12,4 +12,6 @@ if [ "$(ip a|grep $IFNAME)" ] && [ "$(which ethtool)" ]; then
                 echo "$IFNAME activate"
                 dhclient $IFNAME > /dev/null 2>&1 &
         fi
+else
+        echo "not found $IFNAME or ethtool failure"
 fi
