@@ -10,7 +10,9 @@ if [ "$(ip a|grep $IFNAME)" ] && [ "$(which ethtool)" ]; then
         ip link set $IFNAME up
         if [ "$(ethtool $IFNAME|grep Link|grep detected|grep yes)" ]; then
                 echo "$IFNAME activate"
-                dhclient $IFNAME > /dev/null 2>&1 &
+                if [ ! "$(ip a|grep -F inet|grep -F $IFNAME)" ]; then
+                        dhclient $IFNAME > /dev/null 2>&1 &
+                fi
         fi
 else
         echo "not found $IFNAME or ethtool failure"
