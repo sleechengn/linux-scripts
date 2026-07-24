@@ -24,5 +24,5 @@ if [ "$1" ]; then
         qm set $VMID -tablet 0
         echo "请注意：已经设置了大部分参数，但是romfile，evdev需要修改，配合pvevm-hooks-uhd使用"
 else
-        echo "usage ./macos-inject.sh vmid"
+        echo "usage ./pve-uhd-passthrought-set.sh vmid"
 fi
