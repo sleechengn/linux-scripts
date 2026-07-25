@@ -4,7 +4,9 @@ if [ "$1" ]; then
         IFNAME="$1"
 fi
 if [ ! "$(which ethtool)" ]; then
-        apt install -y ethtool
+        if [ "$(which apt)" ]; then
+                apt install -y ethtool
+        fi
 fi
 if [ "$(ip a|grep $IFNAME)" ] && [ "$(which ethtool)" ]; then
         ip link set $IFNAME up
