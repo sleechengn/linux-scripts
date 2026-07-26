@@ -25,6 +25,3 @@ EOF
 
 systemctl enable ttyd
 systemctl start ttyd
-#如果没有启动，再执行
-killall -9 ttyd.x86_64
-systemctl start ttyd
