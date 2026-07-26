@@ -23,5 +23,4 @@ Type=simple
 WantedBy=multi-user.target
 EOF
 
-systemctl enable ttyd
-systemctl start ttyd
+systemctl enable --now ttyd
