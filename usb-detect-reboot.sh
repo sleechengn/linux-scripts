@@ -55,10 +55,10 @@ else
 USER_INPUT=$(dialog --title "command input" \
                     --inputbox "input command to execute" 10 60 "reboot -f" \
                     3>&1 1>&2 2>&3)
-echo $USER_INPUT
 if [ ! $? -eq 0 ]; then
     exit 1
 fi
+echo $USER_INPUT
 mkdir -p /opt/udr
 if [ ! -e "/opt/udr/udr.sh" ]; then
 cat > /opt/udr/udr.sh <<EOF
