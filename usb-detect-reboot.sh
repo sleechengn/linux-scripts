@@ -50,6 +50,13 @@ if [ "$USBID" == "-r" ]; then
     rm -rf /opt/udr/udr.sh
 else
 
+USER_INPUT=$(dialog --title "command input" \
+                    --inputbox "input command to execute" 10 60 "reboot -f" \
+                    3>&1 1>&2 2>&3)
+echo $USER_INPUT
+if [ ! $? -eq 0 ]; then
+    exit 1
+fi
 mkdir -p /opt/udr
 if [ ! -e "/opt/udr/udr.sh" ]; then
 cat > /opt/udr/udr.sh <<EOF
@@ -59,7 +66,7 @@ while [ \$KEEP == "true" ]; do
     if [ "\$(lsusb|grep -F '$USBID')" ]; then
         echo "usb detected, keep"
     else
-        qm list |grep running|awk '{print \$1}'|grep -v 101|grep -v 103|xargs -i qm stop {}
+        $USER_INPUT
         KEEP="false"
     fi
     sleep 3
