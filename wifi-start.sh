@@ -13,7 +13,7 @@ else
 
     echo "which not install"
     exit 1
-    
+
 fi
 
 echo "usage:"
