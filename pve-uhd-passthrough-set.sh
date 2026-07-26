@@ -16,7 +16,11 @@ if [ "$1" ]; then
         echo kbd=$EVDEV_KBD
         echo mouse=$EVDEV_MOUSE
         echo "set vm $VMID"
-        qm set $VMID --args "-acpitable file=/opt/vm/ssdt-battery.aml -set device.hostpci0.bus=pcie.0 -set device.hostpci0.addr=0x02.0 -set device.hostpci0.x-igd-gms=0x2 -set device.hostpci0.x-igd-opregion=on -set device.hostpci0.x-igd-lpc=on -object input-linux,id=kbd,evdev=$EVDEV_KBD,grab_all=on,repeat=on -object input-linux,id=mouse1,evdev=$EVDEV_MOUSE,grab_all=on"
+        if [ -e "/opt/vm/ssdt-battery.aml" ]; then
+                qm set $VMID --args "-acpitable file=/opt/vm/ssdt-battery.aml -set device.hostpci0.bus=pcie.0 -set device.hostpci0.addr=0x02.0 -set device.hostpci0.x-igd-gms=0x2 -set device.hostpci0.x-igd-opregion=on -set device.hostpci0.x-igd-lpc=on -object input-linux,id=kbd,evdev=$EVDEV_KBD,grab_all=on,repeat=on -object input-linux,id=mouse1,evdev=$EVDEV_MOUSE,grab_all=on"
+        else
+                qm set $VMID --args "-set device.hostpci0.bus=pcie.0 -set device.hostpci0.addr=0x02.0 -set device.hostpci0.x-igd-gms=0x2 -set device.hostpci0.x-igd-opregion=on -set device.hostpci0.x-igd-lpc=on -object input-linux,id=kbd,evdev=$EVDEV_KBD,grab_all=on,repeat=on -object input-linux,id=mouse1,evdev=$EVDEV_MOUSE,grab_all=on"
+        fi
         qm set $VMID -hostpci0 0000:00:02.0,pcie=1,romfile=vbios/fx50gd.rom,x-vga=1
         qm set $VMID -hostpci1 0000:00:1f.3,pcie=1
         qm set $VMID -vga none
