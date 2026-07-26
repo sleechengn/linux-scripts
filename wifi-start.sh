@@ -39,6 +39,7 @@ ip link set $IFNAME up
 #killall -9 wpa_supplicant
 #wpa_cli -i $IFNAME disconnect
 #iw dev $IFNAME disconnect
+killall -9 wpa_supplicant
 SSID=$(iw $IFNAME scan|grep -F "$NAME"|awk '{print $2}')
 echo "SSID=$SSID"
 
