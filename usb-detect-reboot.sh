@@ -5,10 +5,12 @@ USBID=$1
 if [ ! "$USBID" ]; then
 
     if ! command -v dialog &> /dev/null; then
+    apt install -y dialog
         echo "not found dialog (eg. sudo apt install dialog)"
         exit 1
     fi
     if ! command -v lsusb &> /dev/null; then
+    apt install -y usbutils
         echo "not found usbutils (eg. sudo apt install usbutils)"
         exit 1
     fi
