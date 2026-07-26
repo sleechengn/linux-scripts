@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -x
 USBID=$1
-
+apt install -y dialog
 if [ ! "$USBID" ]; then
 
     if ! command -v dialog &> /dev/null; then
