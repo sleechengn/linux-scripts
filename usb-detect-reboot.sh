@@ -42,6 +42,7 @@ ExecStart=/opt/udr/udr.sh
 WorkingDirectory=/opt/udr
 User=root
 Type=simple
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
