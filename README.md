@@ -38,4 +38,6 @@ remove-image.sh <REPO/IMG:TAG>
 拔掉USB执行指定命令
 ```
 ./usb-detect-reboot.sh <usbid eg. 248d:5b5e>
+#删除服务
+./usb-detect-reboot.sh -r
 ```
