@@ -57,6 +57,10 @@ if [ "$SSID" ]; then
                         echo "connected"
                         iw dev $IFNAME link
                         dhclient $IFNAME
+                        if [ ! "$(ip address|grep -F inet|grep -F $IFNAME)" ]; then
+                            echo connect failure
+                            exit 1;
+                        fi
                         if [ ! "$(iptables -t nat -nvL --line-numbers|grep MASQUERADE)" ]; then
                             iptables -t nat -A POSTROUTING -j MASQUERADE
                         fi
