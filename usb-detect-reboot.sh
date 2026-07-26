@@ -9,7 +9,7 @@ while [ \$KEEP == "true" ]; do
     if [ "\$(lsusb|grep -F 248d|grep -F 5b5e)" ]; then
         echo "usb detected, keep"
     else
-        qm list |grep running|awk '{print \$1}'|grep -v 101|grep -v 103|xargs -i qm shutdown {}
+        qm list |grep running|awk '{print \$1}'|grep -v 101|grep -v 103|xargs -i qm stop {}
         KEEP="false"
     fi
     sleep 3
