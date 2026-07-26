@@ -55,6 +55,7 @@ if [ "$SSID" ]; then
                 if [ "$(iw dev $IFNAME link|grep SSID)" ]; then        
                         echo 1 > /proc/sys/net/ipv4/ip_forward
                         echo "connected"
+                        iw dev $IFNAME link
                         dhclient $IFNAME
                         if [ ! "$(iptables -t nat -nvL --line-numbers|grep MASQUERADE)" ]; then
                             iptables -t nat -A POSTROUTING -j MASQUERADE
