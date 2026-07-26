@@ -7,10 +7,10 @@ PWD=$2
 
 PSK=$(wpa_passphrase $1 $2|grep [^#]psk=.*|awk -F '=' '{print $2}')
 echo $PSK
-
+IFNAME=$(iw dev|grep Interface|awk '{print $2}')
 cat > /etc/network/interfaces.d/wifi.conf <<EOF
-auto wlp3s0
-iface wlp3s0 inet dhcp
+auto $IFNAME
+iface $IFNAME inet dhcp
         wpa-ssid $SSID
         wpa-psk $PSK
         post-up iptables -t nat -A POSTROUTING -j MASQUERADE
