@@ -8,7 +8,9 @@ else
 if [ "$USBID" == "-r" ]; then
     systemctl stop udr
     systemctl disable udr
+    rm -rf /etc/systemd/system/udr.service
     ps -ef|grep udr.sh|awk '{print $2}'|xargs -i kill -9 {}
+    rm -rf /opt/udr/udr.sh
 else
 
 mkdir -p /opt/udr
