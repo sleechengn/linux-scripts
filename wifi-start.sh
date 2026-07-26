@@ -48,10 +48,9 @@ if [ "$SSID" ]; then
 
         SETTING_LOOP=1
         TRY_COUNT=0
-        while [ $SETTING_LOOP -eq 1 ]; do
+        while [ $SETTING_LOOP -eq 1 ] && [ $TRY_COUNT -lt 10 ]; do
                 TRY_COUNT=$(($TRY_COUNT+1))
                 echo "try count $TRY_COUNT"
-                iw dev $IFNAME link
                 if [ "$(iw dev $IFNAME link|grep SSID)" ]; then        
                         echo 1 > /proc/sys/net/ipv4/ip_forward
                         echo "connected"
@@ -65,6 +64,7 @@ if [ "$SSID" ]; then
                         sleep 1
                 fi
         done
+        echo "try count over"
         killall -9 wpa_supplicant
         exit 1
 else
