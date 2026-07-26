@@ -36,6 +36,7 @@ echo "ssid $NAME"
 echo "password $PASSWD"
 
 ip link set $IFNAME up
+#killall -9 wpa_supplicant
 #wpa_cli -i $IFNAME disconnect
 #iw dev $IFNAME disconnect
 SSID=$(iw $IFNAME scan|grep -F "$NAME"|awk '{print $2}')
@@ -46,8 +47,11 @@ if [ "$SSID" ]; then
         wpa_supplicant -B -i $IFNAME -c /tmp/wpa_supplicant.conf
 
         SETTING_LOOP=1
+        TRY_COUNT=0
         while [ $SETTING_LOOP -eq 1 ]; do
-                if [ "$(iw dev $IFNAME link|grep SSID)" ]; then
+                TRY_COUNT=$(($TRY_COUNT+1))
+                echo "try count $TRY_COUNT"
+                if [ "$(iw dev $IFNAME link|grep SSID)" ]; then        
                         echo 1 > /proc/sys/net/ipv4/ip_forward
                         echo "connected"
                         dhclient $IFNAME
