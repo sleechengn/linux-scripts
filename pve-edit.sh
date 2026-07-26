@@ -8,7 +8,7 @@ if [ "$(ls -A /etc/pve/qemu-server)" ]; then
         MENU_OPTIONS+=("$file" "$(cat $file|grep name|awk '{print $2}')")
     done
     if [ ${#MENU_OPTIONS[@]} -eq 0 ]; then
-        dialog --msgbox "未找到有效数据！" 8 40
+        dialog --msgbox "notfound" 8 40
         exit 1
     fi
     CHOICE=$(dialog --clear \

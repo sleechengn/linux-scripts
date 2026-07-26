@@ -8,7 +8,7 @@ done < <( qm list|sed 1d|awk '{print $1,$2,$3}')
 
 # 2. 检查数组是否为空
 if [ ${#MENU_OPTIONS[@]} -eq 0 ]; then
-    dialog --msgbox "未找到有效数据！" 8 40
+    dialog --msgbox "notfounddat" 8 40
     exit 1
 fi
 
