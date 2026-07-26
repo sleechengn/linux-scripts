@@ -51,6 +51,7 @@ if [ "$SSID" ]; then
         while [ $SETTING_LOOP -eq 1 ]; do
                 TRY_COUNT=$(($TRY_COUNT+1))
                 echo "try count $TRY_COUNT"
+                iw dev $IFNAME link
                 if [ "$(iw dev $IFNAME link|grep SSID)" ]; then        
                         echo 1 > /proc/sys/net/ipv4/ip_forward
                         echo "connected"
@@ -59,10 +60,13 @@ if [ "$SSID" ]; then
                             iptables -t nat -A POSTROUTING -j MASQUERADE
                         fi
                         SETTING_LOOP=0
+                        exit 0
                 else
                         sleep 1
                 fi
         done
+        killall -9 wpa_supplicant
+        exit 1
 else
     echo "not found $NAME"
 fi
