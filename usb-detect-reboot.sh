@@ -24,7 +24,7 @@ if [ ! "$USBID" ]; then
             MENU_OPTIONS+=("$usb_id" "$line")
         fi
     done < <(lsusb)
-
+    MENU_OPTIONS+=("-r" "un install")
     if [ ${#MENU_OPTIONS[@]} -eq 0 ]; then
         dialog --title "alter" --msgbox "not found USB device" 6 40
         exit 1
