@@ -23,3 +23,5 @@ WantedBy=multi-user.target
 EOF
 
 systemctl enable --now ttyd
+
+echo "http://ip:8080/ttyd"
