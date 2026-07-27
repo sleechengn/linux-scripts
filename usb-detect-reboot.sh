@@ -58,7 +58,7 @@ USER_INPUT=$(dialog --title "command input" \
                     --editbox "$default_file" 10 60 \
                     3>&1 1>&2 2>&3)
 rm -rf $default_file
-if [ ! $? -eq 0 ]; then
+if [ ! $? -eq 0 ] || [ ! "$USER_INPUT" ]; then
     exit 1
 fi
 echo $USER_INPUT
