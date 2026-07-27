@@ -51,9 +51,10 @@ if [ "$USBID" == "-r" ]; then
     ps -ef|grep udr.sh|awk '{print $2}'|xargs -i kill -9 {}
     rm -rf /opt/udr/udr.sh
 else
-
+default_file=$(mktemp)
+echo "reboot -f" > $default_file
 USER_INPUT=$(dialog --title "command input" \
-                    --inputbox "input command to execute" 10 60 "reboot -f" \
+                    --editbox "$default_file" 10 60 \
                     3>&1 1>&2 2>&3)
 if [ ! $? -eq 0 ]; then
     exit 1
