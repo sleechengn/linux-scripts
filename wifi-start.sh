@@ -36,7 +36,6 @@ if [ ! "$2" ]; then
     fi
 fi
 
-echo "usage:"
 echo "./wifi-start.sh SSID PASSWORD"
 
 IFNAME=$(iw dev|grep Interface|head -n 1|awk '{print $2}')
