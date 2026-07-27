@@ -69,7 +69,7 @@ cat > /opt/udr/udr.sh <<EOF
 KEEP="true"
 while [ \$KEEP == "true" ]; do
     if [ "\$(lsusb|grep -F '$USBID')" ]; then
-        echo "usb detected, keep"
+        echo "usb detected, keep" > /dev/null
     else
         $USER_INPUT
         KEEP="false"
