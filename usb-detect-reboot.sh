@@ -36,8 +36,9 @@ if [ ! "$USBID" ]; then
        --menu "Please select USB device (Use up down Enter):" \
        20 80 10 \
        "${MENU_OPTIONS[@]}" 2> "$TMP_FILE"
+    USBID=$(cat $TMP_FILE|head -n 1)
+    rm -rf $TMP_FILE
     if [ $? -eq 0 ]; then
-        USBID=$(cat $TMP_FILE|head -n 1)
         echo select $USBID
     else
         exit 1
@@ -56,6 +57,7 @@ echo "reboot -f" > $default_file
 USER_INPUT=$(dialog --title "command input" \
                     --editbox "$default_file" 10 60 \
                     3>&1 1>&2 2>&3)
+rm -rf $default_file
 if [ ! $? -eq 0 ]; then
     exit 1
 fi
