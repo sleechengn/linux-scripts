@@ -2,10 +2,10 @@
 
 if [ -e "/usr/bin/which" ] || [ -e "/bin/which" ]; then
     if [ "$(which apt)" ]; then
-        apt install iw isc-dhcp-client wpasupplicant iptables -y
+        apt install iw isc-dhcp-client wpasupplicant iptables dialog -y
     fi
     if [ "$(which pacman)" ]; then
-        pacman -S --noconfirm iw dhclient wpa_supplicant iptables
+        pacman -S --noconfirm iw dialog dhclient wpa_supplicant iptables
     fi
 else
     echo "which not install"
