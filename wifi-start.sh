@@ -19,17 +19,31 @@ fi
 echo "usage:"
 echo "./wifi-start.sh SSID PASSWORD"
 
-NAME="SYJD-8306"
-if [ "$1" ]; then
-    NAME="$1"
+NAME=""
+if [ ! "$1" ]; then
+    NAME=$(dialog --title "wifi ssid" \
+                   --inputbox "ssid:" 8 40 "SYJD-8306" \
+                   3>&1 1>&2 2>&3)
+    echo "wifi name: $NAME"
+    if [ ! "$NAME" ]; then
+    echo "please input ssid"
+    exit 1
+    fi
 fi
 
-PASSWD="88888888"
-if [ "$2" ]; then
-    PASSWD="$2"
+PASSWD=""
+if [ ! "$2" ]; then
+    PASSWD=$(dialog --title "passwd" \
+                   --inputbox "passwd:" 8 45 "12341234" \
+                   3>&1 1>&2 2>&3)
+    echo "wifi passwd: $PASSWD"
+    if [ ! "$PASSWD" ]; then
+    echo "please input pwd"
+    exit 1
+    fi
 fi
 
-IFNAME=$(iw dev|grep Interface|awk '{print $2}')
+IFNAME=$(iw dev|grep Interface|head -n 1|awk '{print $2}')
 
 echo "info -----------------------------------"
 echo "ssid $NAME"
