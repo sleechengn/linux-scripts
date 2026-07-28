@@ -72,13 +72,14 @@ cat > /opt/udr/udr.sh <<EOF
 #!/usr/bin/env bash
 KEEP="true"
 while [ \$KEEP == "true" ]; do
+    sleep 2
     if [ "\$(lsusb|grep -F '$USBID')" ]; then
         echo "usb detected, keep" > /dev/null
     else
         $USER_INPUT
         KEEP="false"
     fi
-    sleep 3
+    sleep 1
 done
 EOF
 chmod +x /opt/udr/udr.sh
