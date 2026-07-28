@@ -38,9 +38,10 @@ if [ ! "$USBID" ]; then
        --menu "Please select USB device (Use up down Enter):" \
        20 80 10 \
        "${MENU_OPTIONS[@]}" 2> "$TMP_FILE"
+    ERR_CODE=$?
     USBID=$(cat $TMP_FILE|head -n 1)
     rm -rf $TMP_FILE
-    if [ $? -eq 0 ]; then
+    if [ $ERR_CODE -eq 0 ]; then
         echo select $USBID
     else
         exit 1
