@@ -56,8 +56,8 @@ if [ "$USBID" == "-r" ]; then
 else
 default_file=$(mktemp)
 echo "reboot -f" > $default_file
-echo "#qm list|grep running|awk '{print $1}'|grep -v 101|grep -v 103|xargs -i qm stop {}" >> $default_file
-echo "#qm list|grep running|awk '{print $1}'|xargs -i qm stop {}" >> $default_file
+echo "#qm list|grep running|awk '{print \$1}'|grep -v 101|grep -v 103|xargs -i qm stop {}" >> $default_file
+echo "#qm list|grep running|awk '{print \$1}'|xargs -i qm stop {}" >> $default_file
 USER_INPUT=$(dialog --title "command input" \
                     --editbox "$default_file" 10 60 \
                     3>&1 1>&2 2>&3)
