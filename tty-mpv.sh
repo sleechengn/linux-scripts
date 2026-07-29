@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -e
 if command -v apt > /dev/null 2>&1; then
     if ! command -v mpv > /dev/null 2>&1; then
         apt install -y mpv
