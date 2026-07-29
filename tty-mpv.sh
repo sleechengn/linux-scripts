@@ -15,7 +15,7 @@ if command -v mpv > /dev/null 2>&1; then
     FILE_LIST=()
     while IFS= read line; do 
         FILE_LIST+=("$line" "$(echo $line|awk -F / '{print $NF}')")
-    done < <(find -maxdepth 2 $(realpath $(pwd))/|grep -F ".mp4")
+    done < <(find $(realpath $(pwd))/ -maxdepth 2|grep -F ".mp4")
     if [ ${#FILE_LIST[@]} -eq 0 ]; then
         echo "no files"
         exit 1
