@@ -1,10 +1,33 @@
 #!/usr/bin/env bash
 
 set -e
+
 DISK_NAME=$1
 if [ ! "$DISK_NAME" ]; then
     echo "input disk, lsblk view, eg. vda sda nvme*"
-    exit 0
+
+    if ! command -v dialog > /dev/null 2>&1; then
+        pacman -Sy --noconfirm dialog
+    fi
+
+    OPTIONS=()
+    while IFS= read -r line; do
+        OPTIONS+=("$(echo $line|awk '{print $1}')" "$line")
+    done < <(lsblk|sed '1d')
+
+    SELECT=$(dialog --clear \
+            --title "disk Selector" \
+            --menu "Please select disk:" \
+            20 80 10 \
+            "${OPTIONS[@]}" \
+            3>&1 1>&2 2>&3 3>&-)
+    ERR=$?
+    echo "$ERR,$SELECT"
+    if [ $ERR -eq 0 ] && [ "$SELECT" ]; then
+        DISK_NAME=$SELECT
+    else
+        exit 0
+    fi
 fi
 DISK="/dev/${DISK_NAME}"
 echo "disk: ${DISK}"
