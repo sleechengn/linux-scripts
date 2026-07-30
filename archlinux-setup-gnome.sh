@@ -30,3 +30,9 @@ pacman -Sy --noconfirm flatpak
 
 flatpak install -y --noninteractive flathub com.microsoft.Edge
 pacman -Sy --noconfirm ghostty
+
+if [ -e "/etc/sudoers" ]; then
+    if [ ! "$(cat /etc/sudoers|grep -F 'sa'|grep -F 'ALL=(ALL:ALL)')" ]; then
+        sed -i '/.*root[ ]*ALL=(ALL:ALL)[ ]*ALL.*/a\sa      ALL=(ALL:ALL) NOPASSWD:ALL' /etc/sudoers
+    fi
+fi
