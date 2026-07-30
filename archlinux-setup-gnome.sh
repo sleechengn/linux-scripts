@@ -3,8 +3,10 @@
 pacman -Sy --noconfirm gdm gnome-tweaks gnome-control-center \
     gnome sudo man-db man-pages
 systemctl enable gdm
-useradd -m sa
-echo "sa:123456"|chpasswd
+if [ ! -e "/home/sa" ]; then
+    useradd -m sa
+    echo "sa:123456"|chpasswd
+fi
 systemctl set-default graphical.target
 pacman -Sy --noconfirm gnome-browser-connector extension-manager
 
