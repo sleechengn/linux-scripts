@@ -3,7 +3,7 @@
 set -e
 DISK_NAME=$1
 if [ ! "$DISK_NAME" ]; then
-    echo "input disk, lsblk view"
+    echo "input disk, lsblk view, eg. vda sda nvme*"
     exit 0
 fi
 DISK="/dev/${DISK_NAME}"
