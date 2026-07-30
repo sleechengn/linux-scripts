@@ -27,3 +27,4 @@ pacman -Sy --noconfirm noto-fonts-cjk adobe-source-han-sans-cn-fonts adobe-sourc
 pacman -Sy --noconfirm flatpak
 
 flatpak install -y --noninteractive flathub com.microsoft.Edge
+pacman -Sy --noconfirm ghostty
