@@ -70,7 +70,7 @@ mkdir -p /mnt/boot/efi
 mount ${PART1} /mnt/boot/efi
 
 arch-chroot /mnt /usr/bin/bash <<EOF
-pacman -Sy --noconfirm grub efibootmgr os-prober openssh networkmanager
+pacman -Sy --noconfirm grub efibootmgr os-prober openssh sudo networkmanager
 systemctl enable sshd
 grub-install ${DISK} --removable
 echo "root:123456"|chpasswd
@@ -80,3 +80,11 @@ grub-mkconfig -o /boot/grub/grub.cfg
 ln -sf /usr/share/zoneinfo/Area/Location /etc/localtime
 systemctl enable NetworkManager
 EOF
+
+if [ -e "/mnt/etc/sudoers" ]; then
+    if [ ! "$(cat /mnt/etc/sudoers|grep -F 'sa'|grep -F 'ALL=(ALL:ALL)')" ]; then
+        sed -i '/.*root[ ]*ALL=(ALL:ALL)[ ]*ALL.*/a\sa      ALL=(ALL:ALL) NOPASSWD:ALL' /mnt/etc/sudoers
+    fi
+fi
+
+umount /mnt
