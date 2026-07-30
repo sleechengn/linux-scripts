@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -e
 pacman -Sy --noconfirm gdm gnome-tweaks gnome-control-center \
     gnome sudo man-db man-pages
 systemctl enable gdm
