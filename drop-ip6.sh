@@ -5,4 +5,4 @@ while IFS= read -r ifn; do
 done < <(ip a|grep "^[0-9]\\:[ ]*.*"|awk '{print $2}'|awk -F : '{print $1}')
 clear
 ip a
-ech "complete"
+echo "complete"
