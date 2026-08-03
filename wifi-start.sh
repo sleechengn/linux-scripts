@@ -22,6 +22,8 @@ if [ ! "$1" ]; then
     echo "please input ssid"
     exit 1
     fi
+else
+    NAME=$1
 fi
 
 PASSWD=""
@@ -34,6 +36,8 @@ if [ ! "$2" ]; then
     echo "please input pwd"
     exit 1
     fi
+else
+    PASSWD=$2
 fi
 
 echo "./wifi-start.sh SSID PASSWORD"
