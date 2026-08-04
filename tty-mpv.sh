@@ -35,7 +35,7 @@ if command -v mpv > /dev/null 2>&1; then
         clear
         ERR=$?
         if [ $ERR -eq 0 ] && [ "$FILE" ]; then
-            if [ -e "" ]; then
+            if [ -e "/dev/fb0" ]; then
                 mpv --vo=drm $FILE
             else
                 mpv --vo=tct $FILE
