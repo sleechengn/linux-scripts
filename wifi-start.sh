@@ -11,16 +11,33 @@ else
     echo "which not install"
     exit 1
 fi
-
+IFNAME=$(iw dev|grep Interface|head -n 1|awk '{print $2}')
 NAME=""
 if [ ! "$1" ]; then
     NAME=$(dialog --title "wifi ssid" \
-                   --inputbox "ssid:" 8 40 "SYJD-8306" \
+                   --inputbox "ssid:" 8 40 "" \
                    3>&1 1>&2 2>&3)
     echo "wifi name: $NAME"
     if [ ! "$NAME" ]; then
-    echo "please input ssid"
-    exit 1
+        killall -9 wpa_supplicant
+
+        ssids=()
+        while IFS= read -r li; do
+            ssids+=("$li" "$li")
+        done < <(iw wlp3s0 scan|grep SSID|awk '{print $2}')
+
+        CHOICE=$(dialog --clear \
+                    --title "Virtual Machine List" \
+                    --menu "Please select which to run" 18 50 8 \
+                    "${ssids[@]}" 2>&1 >/dev/tty)
+        ERR=$?
+        echo "selected $CHOICE"
+        if [ $ERR -eq 0 ] && [ "$CHOICE" ]; then
+            NAME=$CHOICE
+        else
+            echo "please input ssid"
+            exit 1
+        fi
     fi
 else
     NAME=$1
@@ -29,7 +46,7 @@ fi
 PASSWD=""
 if [ ! "$2" ]; then
     PASSWD=$(dialog --title "passwd" \
-                   --inputbox "passwd:" 8 45 "12341234" \
+                   --inputbox "passwd:" 8 45 "" \
                    3>&1 1>&2 2>&3)
     echo "wifi passwd: $PASSWD"
     if [ ! "$PASSWD" ]; then
@@ -42,8 +59,6 @@ fi
 
 echo "./wifi-start.sh SSID PASSWORD"
 
-IFNAME=$(iw dev|grep Interface|head -n 1|awk '{print $2}')
-
 echo "info -----------------------------------"
 echo "ssid $NAME"
 echo "password $PASSWD"
@@ -52,7 +67,7 @@ ip link set $IFNAME up
 #killall -9 wpa_supplicant
 #wpa_cli -i $IFNAME disconnect
 #iw dev $IFNAME disconnect
-killall -9 wpa_supplicant
+
 SSID=$(iw $IFNAME scan|grep -F "$NAME"|awk '{print $2}')
 echo "SSID=$SSID"
 
