@@ -19,9 +19,11 @@ if [ ! "$1" ]; then
                    3>&1 1>&2 2>&3)
     echo "wifi name: $NAME"
     if [ ! "$NAME" ]; then
+
         killall -9 wpa_supplicant
 
         ssids=()
+        ip link set $IFNAME up
         while IFS= read -r li; do
             ssids+=("$li" "$li")
         done < <(iw wlp3s0 scan|grep SSID|awk '{print $2}')
