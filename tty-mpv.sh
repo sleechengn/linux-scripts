@@ -36,6 +36,9 @@ if command -v mpv > /dev/null 2>&1; then
         ERR=$?
         if [ $ERR -eq 0 ] && [ "$FILE" ]; then
             mpv --vo=drm $FILE
+            if [ ! $? -eq 0 ]; then
+                mpv --vo=tct $FILE
+            fi
         else
             echo "you cancel"
             exit 1
