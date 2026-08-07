@@ -70,11 +70,13 @@ ip link set $IFNAME up
 #wpa_cli -i $IFNAME disconnect
 #iw dev $IFNAME disconnect
 
-SSID=$(iw $IFNAME scan|grep -F "$NAME"|awk '{print $2}')
-echo "SSID=$SSID"
+#SSID=$(iw $IFNAME scan|grep -F "$NAME"|awk '{print $2}')
+#echo "SSID=$SSID"
 
-if [ "$SSID" ]; then
-        wpa_passphrase $SSID $PASSWD > /tmp/wpa_supplicant.conf
+#if [ "$SSID" ]; then
+        eval "RSSID=\$'$SSID'"
+        SSIDR=$(echo $RSSID|iconv -f gbk -t utf-8)
+        wpa_passphrase $SSIDR $PASSWD > /tmp/wpa_supplicant.conf
         wpa_supplicant -B -i $IFNAME -c /tmp/wpa_supplicant.conf
 
         SETTING_LOOP=1
@@ -104,6 +106,6 @@ if [ "$SSID" ]; then
         echo "try count over"
         killall -9 wpa_supplicant
         exit 1
-else
-    echo "not found $NAME"
-fi
+##else
+#   echo "not found $NAME"
+#fi
