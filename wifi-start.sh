@@ -30,7 +30,7 @@ if [ ! "$1" ]; then
 
         CHOICE=$(dialog --clear \
                     --title "Virtual Machine List" \
-                    --menu "Please select which to run" 18 50 8 \
+                    --menu "Please select which to run" 18 99 8 \
                     "${ssids[@]}" 2>&1 >/dev/tty)
         ERR=$?
         echo "selected $CHOICE"
