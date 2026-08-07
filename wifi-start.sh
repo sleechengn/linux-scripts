@@ -72,12 +72,12 @@ ip link set $IFNAME up
 
 #SSID=$(iw $IFNAME scan|grep -F "$NAME"|awk '{print $2}')
 #echo "SSID=$SSID"
-
+SSID=$NAME
 #if [ "$SSID" ]; then
         eval "RSSID=\$'$SSID'"
         SSIDR=$(echo $RSSID|iconv -f gbk -t utf-8)
-        echo $SSIDR
-        wpa_passphrase $SSIDR $PASSWD > /tmp/wpa_supplicant.conf
+        echo "SSIDR=$SSIDR"
+        wpa_passphrase $RSSID $PASSWD > /tmp/wpa_supplicant.conf
         wpa_supplicant -B -i $IFNAME -c /tmp/wpa_supplicant.conf
 
         SETTING_LOOP=1
