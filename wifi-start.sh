@@ -67,8 +67,6 @@ echo "password $PASSWD"
 
 ip link set $IFNAME up
 
-ip address show $IFNAME|grep inet|awk '{print $2}'|xargs -i ip address del {} dev $IFNAME
-
 #killall -9 wpa_supplicant
 #wpa_cli -i $IFNAME disconnect
 #iw dev $IFNAME disconnect
@@ -90,6 +88,7 @@ SSID=$NAME
                 echo "try count $TRY_COUNT"
                 if [ "$(iw dev $IFNAME link|grep SSID)" ]; then
                         echo 1 > /proc/sys/net/ipv4/ip_forward
+                        ip address show $IFNAME|grep inet|awk '{print $2}'|xargs -i ip address del {} dev $IFNAME
                         echo "connected"
                         iw dev $IFNAME link
                         dhclient $IFNAME
