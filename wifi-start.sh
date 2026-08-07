@@ -76,6 +76,7 @@ ip link set $IFNAME up
 #if [ "$SSID" ]; then
         eval "RSSID=\$'$SSID'"
         SSIDR=$(echo $RSSID|iconv -f gbk -t utf-8)
+        echo $SSIDR
         wpa_passphrase $SSIDR $PASSWD > /tmp/wpa_supplicant.conf
         wpa_supplicant -B -i $IFNAME -c /tmp/wpa_supplicant.conf
 
