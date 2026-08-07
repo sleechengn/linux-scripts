@@ -26,7 +26,7 @@ if [ ! "$1" ]; then
         ip link set $IFNAME up
         while IFS= read -r li; do
             ssids+=("$li" "$li")
-        done < <(iw wlp3s0 scan|grep SSID|awk '{print $2}')
+        done < <(iw $IFNAME scan|grep SSID|awk '{print $2}')
 
         CHOICE=$(dialog --clear \
                     --title "Virtual Machine List" \
