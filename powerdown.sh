@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+if [ "$1" ] && [ "$1" == "nohup" ]; then
+    echo "nohup"
+else
+    nohup $0 > /dev/null 2>&1 &
+    exit 0
+fi
+
 if [ -e "/proc/sys/kernel/sysrq" ]; then
     echo 1 | tee /proc/sys/kernel/sysrq
 else
