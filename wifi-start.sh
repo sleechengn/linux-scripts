@@ -66,6 +66,9 @@ echo "ssid $NAME"
 echo "password $PASSWD"
 
 ip link set $IFNAME up
+
+ip address show $IFNAME|grep inet|awk '{print $2}'|xargs -i ip address del {} dev $IFNAME
+
 #killall -9 wpa_supplicant
 #wpa_cli -i $IFNAME disconnect
 #iw dev $IFNAME disconnect
