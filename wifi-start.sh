@@ -88,7 +88,7 @@ SSID=$NAME
         while [ $SETTING_LOOP -eq 1 ] && [ $TRY_COUNT -lt 10 ]; do
                 TRY_COUNT=$(($TRY_COUNT+1))
                 echo "try count $TRY_COUNT"
-                if [ "$(iw dev $IFNAME link|grep SSID)" ]; then        
+                if [ "$(iw dev $IFNAME link|grep SSID)" ]; then
                         echo 1 > /proc/sys/net/ipv4/ip_forward
                         echo "connected"
                         iw dev $IFNAME link
