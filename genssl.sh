@@ -5,6 +5,11 @@ if ! command -v openssl > /dev/null 2>&1; then
     apt install -y openssl
 fi
 
+if ! command -v dialog > /dev/null 2>&1; then
+    apt update
+    apt install -y dialog
+fi
+
 #rm -rf $(dirname $0)/ssl
 mkdir -p $(dirname $0)/ssl
 cd $(dirname $0)/ssl
@@ -66,9 +71,17 @@ fi
 openssl verify -CAfile lan-chain-ca.crt lan-chain-sign.crt
 
 #8 Generate Server Key
-ServerCN="192.168.13.8"
+ServerCN=""
 if [ "$1" ]; then
     ServerCN=$1
+else
+    ServerCN=$(dialog --title "ip" \
+                   --inputbox "ip:" 8 45 "" \
+                   3>&1 1>&2 2>&3)
+    ERR=$?
+    if [ ! $ERR -eq 0 ] || [ ! "$ServerCN" ]; then
+        exit 1
+    fi
 fi
 echo CN: $ServerCN
 
