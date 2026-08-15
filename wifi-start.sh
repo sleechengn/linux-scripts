@@ -63,8 +63,8 @@ if [ ! "$1" ]; then
         done < <(iw $IFNAME scan|grep SSID|awk '{print $2}')
 
         CHOICE=$(dialog --clear \
-                    --title "Virtual Machine List" \
-                    --menu "Please select which to run" 18 99 8 \
+                    --title "SSID" \
+                    --menu "Please select which" 18 99 8 \
                     "${ssids[@]}" 2>&1 >/dev/tty)
         ERR=$?
         echo "selected $CHOICE"
