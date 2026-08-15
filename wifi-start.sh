@@ -28,7 +28,7 @@ fi
 
 IFNAMES=()
 while IFS= read -r value; do
-    IFNAMES+=("$value" "$value")
+    IFNAMES+=("$value" "")
 done < <(iw dev|grep Interface|awk '{print $2}')
 
 if [ ${#IFNAMES[@]} -eq 0 ]; then
@@ -114,8 +114,8 @@ SSID=$NAME
         eval "RSSID=\$'$SSID'"
         SSIDR=$(echo $RSSID|iconv -f gbk -t utf-8)
         echo "SSIDR=$SSIDR"
-        wpa_passphrase $RSSID $PASSWD > /tmp/wpa_supplicant.conf
-        wpa_supplicant -B -i $IFNAME -c /tmp/wpa_supplicant.conf
+        wpa_passphrase $RSSID $PASSWD > /tmp/$IFNAME_wpa_supplicant_.conf
+        wpa_supplicant -B -i $IFNAME -c /tmp/$IFNAME_wpa_supplicant_.conf
 
         SETTING_LOOP=1
         TRY_COUNT=0
