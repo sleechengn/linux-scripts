@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
-apt update
-apt install -y openssl
+
+if ! command -v openssl > /dev/null 2>&1; then
+    apt update
+    apt install -y openssl
+fi
 
 #rm -rf $(dirname $0)/ssl
 mkdir -p $(dirname $0)/ssl
