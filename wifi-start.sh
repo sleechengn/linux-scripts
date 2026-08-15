@@ -59,7 +59,7 @@ if [ ! "$1" ]; then
         ssids=()
         ip link set $IFNAME up
         while IFS= read -r li; do
-            ssids+=("$li" "$li")
+            ssids+=("$li" "")
         done < <(iw $IFNAME scan|grep SSID|awk '{print $2}')
 
         CHOICE=$(dialog --clear \
