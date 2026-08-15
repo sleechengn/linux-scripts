@@ -8,16 +8,19 @@ cd $(dirname $0)/ssl
 
 #1 Generate CA KEY
 if [ ! -e "lan-chain-ca.key" ]; then
+    echo "generate new lan-chain-ca.key"
     openssl genrsa -out lan-chain-ca.key 2048
 fi
 
 #2 Generate CA CSR
 if [ ! -e "lan-chain-ca.csr" ]; then
+    echo "generate new lan-chain-ca.csr"
     openssl req -new -subj "/C=CN/ST=SC/L=CD/O=LAN/OU=LAN/CN=LANChainCA" -key lan-chain-ca.key -out lan-chain-ca.csr
 fi
 
 #3 Self signed CA
 if [ ! -e "lan-chain-ca.crt" ]; then
+    echo "generate new lan-chain-ca.crt"
     if [ ! -e "lan-chain-ca.ext" ]; then
 cat > lan-chain-ca.ext <<EOF
 [v3_ca]
@@ -31,16 +34,19 @@ fi
 
 #4 Generate Middle Certificates Key
 if [ ! -e "lan-chain-sign.key" ]; then
-openssl genrsa -out lan-chain-sign.key 4096
+    echo "generate new lan-chain-sign.key"
+    openssl genrsa -out lan-chain-sign.key 4096
 fi
 
 #5 Generate Middle Certificates Sign Request
 if [ ! -e "lan-chain-sign.csr" ]; then
-openssl req -new -subj "/C=CN/ST=SC/L=CD/O=LAN/OU=LAN/CN=LANSIGN" -key lan-chain-sign.key -out lan-chain-sign.csr
+    echo "generate new lan-chain-sign.csr"
+    openssl req -new -subj "/C=CN/ST=SC/L=CD/O=LAN/OU=LAN/CN=LANSIGN" -key lan-chain-sign.key -out lan-chain-sign.csr
 fi
 
 #6 Use CA Sign Middle Certificates
 if [ ! -e "lan-chain-sign.crt" ]; then
+    echo "generate new lan-chain-sign.crt"
     if [ ! -e "lan-chain-sign.ext" ]; then
 cat > lan-chain-sign.ext <<EOF
 [v3_intermediate_ca]
