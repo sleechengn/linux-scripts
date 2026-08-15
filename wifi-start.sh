@@ -2,7 +2,21 @@
 
 if command -v which > /dev/null 2>&1; then
     if command -v apt > /dev/null 2>&1; then
-        apt install iw isc-dhcp-client wpasupplicant iptables dialog -y
+        if ! command -v iw > /dev/null 2>&1; then
+            apt install -y iw
+        fi
+        if ! command -v dhclient > /dev/null 2>&1; then
+            apt install -y isc-dhcp-client
+        fi
+        if ! command -v wpa_supplicant > /dev/null 2>&1; then
+            apt install -y wpasupplicant
+        fi
+        if ! command -v iptables > /dev/null 2>&1; then
+            apt install -y iptables
+        fi
+        if ! command -v dialog > /dev/null 2>&1; then
+            apt install -y dialog
+        fi
     fi
     if command -v pacman > /dev/null 2>&1; then
         pacman -S --noconfirm iw dialog dhclient wpa_supplicant iptables
@@ -11,14 +25,34 @@ else
     echo "which not install"
     exit 1
 fi
-IFNAME=$(iw dev|grep Interface|head -n 1|awk '{print $2}')
+
+IFNAMES=()
+while IFS= read -r value; do
+    IFNAMES+=("$value" "$value")
+done < <(iw dev|grep Interface|awk '{print $2}')
+
+if [ ${#IFNAMES[@]} -eq 0 ]; then
+    dialog --msgbox "not found dev" 8 40
+    exit 1
+fi
+
+IFNAME=$(dialog --clear \
+                    --title "devices" \
+                    --menu "Please select which" 18 99 8 \
+                    "${IFNAMES[@]}" 2>&1 >/dev/tty)
+ERR=$?
+if [ ! $ERR -eq 0 ] || [ ! "$IFNAME" ]; then
+    exit 1
+fi
+
 NAME=""
 if [ ! "$1" ]; then
     NAME=$(dialog --title "wifi ssid" \
                    --inputbox "ssid:" 8 40 "" \
                    3>&1 1>&2 2>&3)
+    ERR=$?
     echo "wifi name: $NAME"
-    if [ ! "$NAME" ]; then
+    if [ ! "$NAME" ] && [ $ERR -eq 0 ]; then
 
         killall -9 wpa_supplicant
 
@@ -40,6 +74,8 @@ if [ ! "$1" ]; then
             echo "please input ssid"
             exit 1
         fi
+    else
+        exit 1
     fi
 else
     NAME=$1
