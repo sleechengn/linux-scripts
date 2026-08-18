@@ -75,6 +75,7 @@ else
     else
         if [ "$OPTION" == "DHCP" ]; then
             echo "dhcp"
+            ip link set $IFNAME up
             dhclient $IFNAME
         else
             IPV4="$OPTION"
@@ -95,6 +96,8 @@ else
                         3>&1 1>&2 2>&3)
                     ERR=$?
                     if [ $ERR -eq 0 ] && [ "$NEW_IPV4" ]; then
+                        ip link set $IFNAME up
+                        ip address del $IPV4 dev $IFNAME
                         ip address add $NEW_IPV4 dev $IFNAME
                         echo add address $NEW_IPV4 for $IFNAME
                     else
@@ -102,6 +105,7 @@ else
                     fi
                 fi
                 if [ "$CONFIG_TYPE" == "DEL" ]; then
+                    ip link set $IFNAME up
                     ip address del $IPV4 dev $IFNAME
                     echo del $IPV4 from $IFNAME
                 fi
