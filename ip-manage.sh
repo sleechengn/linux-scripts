@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 set -x
 if ! command -v dhclient > /dev/null 2>&1; then
-    if ! command -v apt > /dev/null 2>&1; then
+    if command -v apt > /dev/null 2>&1; then
         apt install -y isc-dhcp-client
     fi
-    if ! command -v pacman > /dev/null 2>&1; then
+    if command -v pacman > /dev/null 2>&1; then
         pacman -Sy --noconfirm dhclient
     fi
 fi
 
 if ! command -v dialog > /dev/null 2>&1; then
-    if ! command -v apt > /dev/null 2>&1; then
+    if command -v apt > /dev/null 2>&1; then
         apt install -y dialog
     fi
-    if ! command -v pacman > /dev/null 2>&1; then
+    if command -v pacman > /dev/null 2>&1; then
         pacman -Sy --noconfirm dialog
     fi
 fi
