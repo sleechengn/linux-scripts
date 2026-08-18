@@ -64,6 +64,7 @@ if [ "$OPTION" == "AddIPv4" ]; then
     echo "select:$IPV4"
     if [ $ERR -eq 0 ] && [ "$IPV4" ]; then
             echo "add new ipv4/cidr address $IPV4"
+            ip link set $IFNAME up
             ip address add $IPV4 dev $IFNAME
     else
         echo "not found new ip"
