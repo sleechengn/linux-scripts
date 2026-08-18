@@ -69,21 +69,51 @@ genfstab -U /mnt >> /mnt/etc/fstab
 mkdir -p /mnt/boot/efi
 mount ${PART1} /mnt/boot/efi
 
+ROOT_PASSWORD=$(dialog --title "setting root password" \
+                   --inputbox "input root password:" 8 45 "" \
+                   3>&1 1>&2 2>&3)
+ERR=$?
+if [ $ERR -eq 0 ] && [ "$ROOT_PASSWORD" ]; then
+    echo "root password:$ROOT_PASSWORD"
+else
+    echo "root password error"
+    exit 1
+fi
+USERNAME=$(dialog --title "setting user name" \
+                   --inputbox "input username:" 8 45 "" \
+                   3>&1 1>&2 2>&3)
+ERR=$?
+if [ $ERR -eq 0 ] && [ "$USERNAME" ]; then
+    echo "username:$USERNAME"
+else
+    echo "user error"
+    exit 1
+fi
+PASSWORD=$(dialog --title "setting user $USERNAME password" \
+                   --inputbox "input $USERNAME password:" 8 45 "" \
+                   3>&1 1>&2 2>&3)
+ERR=$?
+if [ $ERR -eq 0 ] && [ "$PASSWORD" ]; then
+    echo "$USERNAME password:$PASSWORD"
+else
+    echo "$USERNAME password error"
+    exit 1
+fi
 arch-chroot /mnt /usr/bin/bash <<EOF
 pacman -Sy --noconfirm grub efibootmgr os-prober openssh sudo fish networkmanager
 systemctl enable sshd
 grub-install ${DISK} --removable
-echo "root:123456"|chpasswd
-useradd -s /usr/bin/fish -m sa
-echo "sa:123456"|chpasswd
+echo "root:$ROOT_PASSWORD"|chpasswd
+useradd -s /usr/bin/fish -m $USERNAME
+echo "$USERNAME:$PASSWORD"|chpasswd
 grub-mkconfig -o /boot/grub/grub.cfg
 ln -sf /usr/share/zoneinfo/Area/Location /etc/localtime
 systemctl enable NetworkManager
 EOF
 
 if [ -e "/mnt/etc/sudoers" ]; then
-    if [ ! "$(cat /mnt/etc/sudoers|grep -F 'sa'|grep -F 'ALL=(ALL:ALL)')" ]; then
-        sed -i '/.*root[ ]*ALL=(ALL:ALL)[ ]*ALL.*/a\sa      ALL=(ALL:ALL) NOPASSWD:ALL' /mnt/etc/sudoers
+    if [ ! "$(cat /mnt/etc/sudoers|grep -F $USERNAME|grep -F 'ALL=(ALL:ALL)')" ]; then
+        sed -i "/.*root[ ]*ALL=(ALL:ALL)[ ]*ALL.*/a\$USERNAME      ALL=(ALL:ALL) NOPASSWD:ALL" /mnt/etc/sudoers
     fi
 fi
 
