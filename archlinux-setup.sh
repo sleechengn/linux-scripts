@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -ex
 
 DISK_NAME=$1
 if [ ! "$DISK_NAME" ]; then
