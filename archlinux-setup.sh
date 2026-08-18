@@ -70,11 +70,11 @@ mkdir -p /mnt/boot/efi
 mount ${PART1} /mnt/boot/efi
 
 arch-chroot /mnt /usr/bin/bash <<EOF
-pacman -Sy --noconfirm grub efibootmgr os-prober openssh sudo networkmanager
+pacman -Sy --noconfirm grub efibootmgr os-prober openssh sudo fish networkmanager
 systemctl enable sshd
 grub-install ${DISK} --removable
 echo "root:123456"|chpasswd
-useradd -m sa
+useradd -s /usr/bin/fish -m sa
 echo "sa:123456"|chpasswd
 grub-mkconfig -o /boot/grub/grub.cfg
 ln -sf /usr/share/zoneinfo/Area/Location /etc/localtime
