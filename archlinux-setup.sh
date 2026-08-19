@@ -109,6 +109,10 @@ echo "$USERNAME:$PASSWORD"|chpasswd
 grub-mkconfig -o /boot/grub/grub.cfg
 ln -sf /usr/share/zoneinfo/Area/Location /etc/localtime
 systemctl enable NetworkManager
+find /usr/lib/|grep -F /getty@|xargs -i sed -i "s,^ExecStart.*,ExecStart=-/sbin/agetty --noclear %I $TERM --autologin $USERNAME,g" {}
+systemctl daemon-reload
+systemctl disable getty@tty1.service
+systemctl enable getty@tty1.service
 EOF
 
 if [ -e "/mnt/etc/sudoers" ]; then
