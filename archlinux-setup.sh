@@ -121,4 +121,4 @@ if [ -e "/mnt/etc/sudoers" ]; then
     fi
 fi
 
-umount /mnt
+echo "please reboot"
