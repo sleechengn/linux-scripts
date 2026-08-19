@@ -70,7 +70,7 @@ mkdir -p /mnt/boot/efi
 mount ${PART1} /mnt/boot/efi
 
 ROOT_PASSWORD=$(dialog --title "setting root password" \
-                   --inputbox "input root password:" 8 45 "" \
+                   --inputbox "input root password:" 8 45 "123456" \
                    3>&1 1>&2 2>&3)
 ERR=$?
 if [ $ERR -eq 0 ] && [ "$ROOT_PASSWORD" ]; then
@@ -80,7 +80,7 @@ else
     exit 1
 fi
 USERNAME=$(dialog --title "setting user name" \
-                   --inputbox "input username:" 8 45 "" \
+                   --inputbox "input username:" 8 45 "sa" \
                    3>&1 1>&2 2>&3)
 ERR=$?
 if [ $ERR -eq 0 ] && [ "$USERNAME" ]; then
@@ -90,7 +90,7 @@ else
     exit 1
 fi
 PASSWORD=$(dialog --title "setting user $USERNAME password" \
-                   --inputbox "input $USERNAME password:" 8 45 "" \
+                   --inputbox "input $USERNAME password:" 8 45 "12345678" \
                    3>&1 1>&2 2>&3)
 ERR=$?
 if [ $ERR -eq 0 ] && [ "$PASSWORD" ]; then
