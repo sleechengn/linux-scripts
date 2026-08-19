@@ -44,3 +44,8 @@ GTK_IM_MODULE=fcitx5
 QT_IM_MODULE=fcitx5
 XMODIFIERS=@im=fcitx5
 EOF
+
+pacman -S --noconfirm pipewire pipewire-pulse wireplumber pavucontrol
+systemctl --user -M $USERNAME@ daemon-reload
+su $USERNAME -c 'gsettings set org.gnome.desktop.interface color-scheme prefer-dark'
+systemctl --user -M $USERNAME@ enable --now pipewire pipewire-pulse wireplumber
