@@ -13,8 +13,14 @@ if [ $ERR -eq 0 ] && [ "$USERNAME" ]; then
         PASSWORD=$(dialog --title "setup user" \
                    --inputbox "password:" 8 45 "" \
                    3>&1 1>&2 2>&3)
-        useradd -m $USERNAME
-        echo "$USERNAME:$PASSWORD"|chpasswd
+        ERR=$?
+        if [ $ERR -eq 0 ] && [ "$PASSWORD" ]; then
+            useradd -m $USERNAME
+            echo "$USERNAME:$PASSWORD"|chpasswd
+        else
+            echo "password not set"
+            exit 1
+        fi
     else
         echo user: $USERNAME exist
     fi
