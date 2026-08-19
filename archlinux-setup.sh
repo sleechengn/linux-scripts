@@ -117,7 +117,7 @@ EOF
 
 if [ -e "/mnt/etc/sudoers" ]; then
     if [ ! "$(cat /mnt/etc/sudoers|grep -F $USERNAME|grep -F 'ALL=(ALL:ALL)')" ]; then
-        sed -i "/.*root[ ]*ALL=(ALL:ALL)[ ]*ALL.*/a\$USERNAME      ALL=(ALL:ALL) NOPASSWD:ALL" /mnt/etc/sudoers
+        sed -i "/.*root[ ]*ALL=(ALL:ALL)[ ]*ALL.*/a $USERNAME      ALL=(ALL:ALL) NOPASSWD:ALL" /mnt/etc/sudoers
     fi
 fi
 
