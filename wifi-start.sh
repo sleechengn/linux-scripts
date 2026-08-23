@@ -20,18 +20,14 @@ fi
 if command -v pacman > /dev/null 2>&1; then
     pacman -S --noconfirm iw dialog dhclient wpa_supplicant iptables
 fi
-
-
 IFNAMES=()
 while IFS= read -r value; do
     IFNAMES+=("$value" "")
 done < <(iw dev|grep Interface|awk '{print $2}')
-
 if [ ${#IFNAMES[@]} -eq 0 ]; then
     dialog --msgbox "not found dev" 8 40
     exit 1
 fi
-
 IFNAME=$(dialog --clear \
                     --title "devices" \
                     --menu "Please select which" 18 99 8 \
@@ -40,7 +36,6 @@ ERR=$?
 if [ ! $ERR -eq 0 ] || [ ! "$IFNAME" ]; then
     exit 1
 fi
-
 NAME=""
 if [ ! "$1" ]; then
     NAME=$(dialog --title "wifi ssid" \
@@ -49,15 +44,12 @@ if [ ! "$1" ]; then
     ERR=$?
     echo "wifi name: $NAME"
     if [ ! "$NAME" ] && [ $ERR -eq 0 ]; then
-
         killall -9 wpa_supplicant
-
         ssids=()
         ip link set $IFNAME up
         while IFS= read -r li; do
             ssids+=("$li" "")
         done < <(iw $IFNAME scan|grep SSID|awk '{print $2}')
-
         CHOICE=$(dialog --clear \
                     --title "SSID" \
                     --menu "Please select which" 18 99 8 \
@@ -76,7 +68,6 @@ if [ ! "$1" ]; then
 else
     NAME=$1
 fi
-
 PASSWD=""
 if [ ! "$2" ]; then
     PASSWD=$(dialog --title "passwd" \
@@ -90,27 +81,20 @@ if [ ! "$2" ]; then
 else
     PASSWD=$2
 fi
-
 echo "./wifi-start.sh SSID PASSWORD"
-
 echo "info -----------------------------------"
 echo "ssid $NAME"
 echo "password $PASSWD"
-
 ip link set $IFNAME up
-
 #killall -9 wpa_supplicant
 #wpa_cli -i $IFNAME disconnect
 #iw dev $IFNAME disconnect
-
 SSID=$NAME
-
 eval "RSSID=\$'$SSID'"
 SSIDR=$(echo $RSSID|iconv -f gbk -t utf-8)
 echo "SSIDR=$SSIDR"
 wpa_passphrase $RSSID $PASSWD > /tmp/$IFNAME_wpa_supplicant_.conf
 wpa_supplicant -B -i $IFNAME -c /tmp/$IFNAME_wpa_supplicant_.conf
-
 SETTING_LOOP=1
 TRY_COUNT=0
 while [ $SETTING_LOOP -eq 1 ] && [ $TRY_COUNT -lt 10 ]; do
