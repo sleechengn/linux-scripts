@@ -1,30 +1,26 @@
 #!/usr/bin/env bash
-
-if command -v which > /dev/null 2>&1; then
-    if command -v apt > /dev/null 2>&1; then
-        if ! command -v iw > /dev/null 2>&1; then
-            apt install -y iw
-        fi
-        if ! command -v dhclient > /dev/null 2>&1; then
-            apt install -y isc-dhcp-client
-        fi
-        if ! command -v wpa_supplicant > /dev/null 2>&1; then
-            apt install -y wpasupplicant
-        fi
-        if ! command -v iptables > /dev/null 2>&1; then
-            apt install -y iptables
-        fi
-        if ! command -v dialog > /dev/null 2>&1; then
-            apt install -y dialog
-        fi
+set -xe
+if command -v apt > /dev/null 2>&1; then
+    if ! command -v iw > /dev/null 2>&1; then
+        apt install -y iw
     fi
-    if command -v pacman > /dev/null 2>&1; then
-        pacman -S --noconfirm iw dialog dhclient wpa_supplicant iptables
+    if ! command -v dhclient > /dev/null 2>&1; then
+        apt install -y isc-dhcp-client
     fi
-else
-    echo "which not install"
-    exit 1
+    if ! command -v wpa_supplicant > /dev/null 2>&1; then
+        apt install -y wpasupplicant
+    fi
+    if ! command -v iptables > /dev/null 2>&1; then
+        apt install -y iptables
+    fi
+    if ! command -v dialog > /dev/null 2>&1; then
+        apt install -y dialog
+    fi
 fi
+if command -v pacman > /dev/null 2>&1; then
+    pacman -S --noconfirm iw dialog dhclient wpa_supplicant iptables
+fi
+
 
 IFNAMES=()
 while IFS= read -r value; do
