@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -xe
 pacman -S --noconfirm psmisc curl aria2 fish
 mkdir -p /opt/ttyd
 cd /opt/ttyd

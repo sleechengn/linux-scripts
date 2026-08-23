@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -ex
 apt install -y psmisc curl aria2
 apt install -y fish
 mkdir -p /opt/ttyd

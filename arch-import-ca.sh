@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-
-
+set -xe
 if [ "$1" ]; then
     if [ $(id -u $(whoami)) -eq 0 ]; then
         cp $1 /etc/ca-certificates/trust-source/anchors/

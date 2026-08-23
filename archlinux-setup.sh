@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-
-set -ex
-
+set -xe
 DISK_NAME=$1
 if [ ! "$DISK_NAME" ]; then
     echo "input disk, lsblk view, eg. vda sda nvme*"
