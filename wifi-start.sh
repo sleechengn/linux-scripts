@@ -84,8 +84,8 @@ if [ ! "$2" ]; then
                    3>&1 1>&2 2>&3)
     echo "wifi passwd: $PASSWD"
     if [ ! "$PASSWD" ]; then
-    echo "please input pwd"
-    exit 1
+        echo "please input pwd"
+        exit 1
     fi
 else
     PASSWD=$2
@@ -103,44 +103,39 @@ ip link set $IFNAME up
 #wpa_cli -i $IFNAME disconnect
 #iw dev $IFNAME disconnect
 
-#SSID=$(iw $IFNAME scan|grep -F "$NAME"|awk '{print $2}')
-#echo "SSID=$SSID"
 SSID=$NAME
-#if [ "$SSID" ]; then
-        eval "RSSID=\$'$SSID'"
-        SSIDR=$(echo $RSSID|iconv -f gbk -t utf-8)
-        echo "SSIDR=$SSIDR"
-        wpa_passphrase $RSSID $PASSWD > /tmp/$IFNAME_wpa_supplicant_.conf
-        wpa_supplicant -B -i $IFNAME -c /tmp/$IFNAME_wpa_supplicant_.conf
 
-        SETTING_LOOP=1
-        TRY_COUNT=0
-        while [ $SETTING_LOOP -eq 1 ] && [ $TRY_COUNT -lt 10 ]; do
-                TRY_COUNT=$(($TRY_COUNT+1))
-                echo "try count $TRY_COUNT"
-                if [ "$(iw dev $IFNAME link|grep SSID)" ]; then
-                        echo 1 > /proc/sys/net/ipv4/ip_forward
-                        ip address show $IFNAME|grep inet|awk '{print $2}'|xargs -i ip address del {} dev $IFNAME
-                        echo "connected"
-                        iw dev $IFNAME link
-                        dhclient $IFNAME
-                        echo dhclient $?
-                        if [ ! "$(ip address|grep -F inet|grep -F $IFNAME)" ]; then
-                            echo connect failure
-                            exit 1
-                        fi
-                        if [ ! "$(iptables -t nat -nvL --line-numbers|grep MASQUERADE)" ]; then
-                            iptables -t nat -A POSTROUTING -j MASQUERADE
-                        fi
-                        SETTING_LOOP=0
-                        exit 0
-                else
-                        sleep 1
-                fi
-        done
-        echo "try count over"
-        killall -9 wpa_supplicant
-        exit 1
-##else
-#   echo "not found $NAME"
-#fi
+eval "RSSID=\$'$SSID'"
+SSIDR=$(echo $RSSID|iconv -f gbk -t utf-8)
+echo "SSIDR=$SSIDR"
+wpa_passphrase $RSSID $PASSWD > /tmp/$IFNAME_wpa_supplicant_.conf
+wpa_supplicant -B -i $IFNAME -c /tmp/$IFNAME_wpa_supplicant_.conf
+
+SETTING_LOOP=1
+TRY_COUNT=0
+while [ $SETTING_LOOP -eq 1 ] && [ $TRY_COUNT -lt 10 ]; do
+    TRY_COUNT=$(($TRY_COUNT+1))
+    echo "try count $TRY_COUNT"
+    if [ "$(iw dev $IFNAME link|grep SSID)" ]; then
+        echo 1 > /proc/sys/net/ipv4/ip_forward
+        ip address show $IFNAME|grep inet|awk '{print $2}'|xargs -i ip address del {} dev $IFNAME
+        echo "connected"
+        iw dev $IFNAME link
+        dhclient $IFNAME
+        echo dhclient $?
+        if [ ! "$(ip address|grep -F inet|grep -F $IFNAME)" ]; then
+            echo connect failure
+            exit 1
+        fi
+        if [ ! "$(iptables -t nat -nvL --line-numbers|grep MASQUERADE)" ]; then
+            iptables -t nat -A POSTROUTING -j MASQUERADE
+        fi
+        SETTING_LOOP=0
+        exit 0
+    else
+        sleep 1
+    fi
+done
+echo "try count over"
+killall -9 wpa_supplicant
+exit 1
