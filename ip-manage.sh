@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -x
+set -xe
 if ! command -v dhclient > /dev/null 2>&1; then
     if command -v apt > /dev/null 2>&1; then
         apt install -y isc-dhcp-client
