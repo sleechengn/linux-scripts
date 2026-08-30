@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -ex
 IFNAME=""
 if [ "$1" ]; then
         IFNAME="$1"
