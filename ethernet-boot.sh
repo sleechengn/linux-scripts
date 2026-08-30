@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
 set -ex
+if ! command -v dialog > /dev/null 2>&1; then
+        if command -v apt > /dev/null 2>&1; then
+                apt install -y dialog
+        fi
+        if command -v pacman > /dev/null 2>&1; then
+                pacman -S --noconfirm dialog
+        fi
+fi
+if ! command -v iptables > /dev/null 2>&1; then
+        if command -v apt > /dev/null 2>&1; then
+                apt install -y iptables
+        fi
+        if command -v pacman > /dev/null 2>&1; then
+                pacman -S --noconfirm iptables
+        fi
+fi
 IFNAME=""
 if [ "$1" ]; then
         IFNAME="$1"
 else
-        if ! command -v dialog > /dev/null 2>&1; then
-                if command -v apt > /dev/null 2>&1; then
-                        apt install -y dialog
-                fi
-                if command -v pacman > /dev/null 2>&1; then
-                        pacman -S --noconfirm dialog
-                fi
-        fi
-        if ! command -v iptables > /dev/null 2>&1; then
-                if command -v apt > /dev/null 2>&1; then
-                        apt install -y iptables
-                fi
-                if command -v pacman > /dev/null 2>&1; then
-                        pacman -S --noconfirm iptables
-                fi
-        fi
         INTERFACES=()
         while IFS= read -r INTERFACE; do
         INTERFACES+=("$INTERFACE" "")
