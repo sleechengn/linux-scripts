@@ -167,7 +167,7 @@ niri-session
 ./remove-image.sh <repo/img>
 ```
 
-### tty显示图片(文件：/root/.bg.jpg)
+### tty显示图片(文件：/root/.bg.jpg)(可自己修改)路径
 ```
 ./show-image.sh
 ```
