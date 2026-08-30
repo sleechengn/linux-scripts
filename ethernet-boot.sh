@@ -12,6 +12,14 @@ else
                         pacman -S --noconfirm dialog
                 fi
         fi
+        if ! command -v iptables > /dev/null 2>&1; then
+                if command -v apt > /dev/null 2>&1; then
+                        apt install -y iptables
+                fi
+                if command -v pacman > /dev/null 2>&1; then
+                        pacman -S --noconfirm iptables
+                fi
+        fi
         INTERFACES=()
         while IFS= read -r INTERFACE; do
         INTERFACES+=("$INTERFACE" "")
@@ -42,6 +50,10 @@ if [ "$(ip a|grep $IFNAME)" ] && [ "$(which ethtool)" ]; then
                 echo "$IFNAME activate"
                 if [ ! "$(ip a|grep -F inet|grep -F $IFNAME)" ]; then
                         dhclient $IFNAME > /dev/null 2>&1 &
+                        echo 1 > /proc/sys/net/ipv4/ip_forward
+                        if [ ! "$(iptables -t nat -nvL --line-numbers|grep MASQUERADE)" ]; then
+                                iptables -t nat -A POSTROUTING -j MASQUERADE
+                        fi
                 fi
         fi
 else
