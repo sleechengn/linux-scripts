@@ -1,7 +1,34 @@
 #!/usr/bin/env bash
-IFNAME=enp4s0
+IFNAME=""
 if [ "$1" ]; then
         IFNAME="$1"
+else
+        if ! command -v dialog > /dev/null 2>&1; then
+                if command -v apt > /dev/null 2>&1; then
+                        apt install -y dialog
+                fi
+                if command -v pacman > /dev/null 2>&1; then
+                        pacman -S --noconfirm dialog
+                fi
+        fi
+        INTERFACES=()
+        while IFS= read -r INTERFACE; do
+        INTERFACES+=("$INTERFACE" "")
+        done < <(ip a|grep "^[0-9]\\:[ ]*.*"|awk '{print $2}'|awk -F : '{print $1}')
+
+        if [ ${#INTERFACES[@]} -eq 0 ]; then
+                dialog --msgbox "not found dev" 8 40
+                exit 1
+        fi
+
+        IFNAME=$(dialog --clear \
+                        --title "devices" \
+                        --menu "Please select which" 18 99 8 \
+                        "${INTERFACES[@]}" 2>&1 >/dev/tty)
+        ERR=$?
+        if [ ! $ERR -eq 0 ] || [ ! "$IFNAME" ]; then
+                exit 1
+        fi
 fi
 if [ ! "$(which ethtool)" ]; then
         if [ "$(which apt)" ]; then
