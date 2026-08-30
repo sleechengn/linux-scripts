@@ -1,14 +1,17 @@
 ## 一些脚本，可能没用
 
-自动登录root，开机自动登录
+### 开机自动登录tty，免于手动输入账号和密钥
 ```
-./debian-auto-login-tty.sh
+# root自动登录
+./archlinux-shell-auto-login.sh
+# 其它用户（先添加用户，必须要存在，并能正常登录）
+./archlinux-shell-auto-login.sh <user>
 ```
 
 
-enx的网卡自动获取dhcp，注意这个是一个长期进程，不会返回
+### 导入archlinux证书（crt)
 ```
-./enx-dhcp.sh
+./arch-import-ca.sh <证书文件路径>
 ```
 
 
