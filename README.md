@@ -171,3 +171,35 @@ niri-session
 ```
 ./show-image.sh
 ```
+
+### tmux安装配置支持arch/deb/alpine并创建（如不存在）进入default为名的session
+```
+./tmux.sh
+```
+
+### 检测USB被拨出则执行指定命令
+```
+# 交互式选择USB设备，条件成立时执行命令，通过3秒检测一次
+./usb-detect-reboot.sh
+```
+
+### vmdk转qcow2
+```
+./vmdk2qcow2.sh <src> <dst>
+```
+
+### vmdk转raw
+```
+./vmdk2raw.sh <src> <dst>
+```
+
+### vhd转qcow2
+```
+./vpc2qcow2.sh <src> <dst>
+```
+
+### 交互式连接配置wifi
+```
+./wifi-start.sh
+# 不输入ssid则自动扫描
+```
