@@ -1,8 +1,5 @@
 ## 一些脚本，可能没用
 
-
-
-
 ### archlinux证书导入（crt)
 ```
 ./arch-import-ca.sh <证书文件路径>
