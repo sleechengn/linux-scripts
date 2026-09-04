@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -xe
+set -x
 if command -v apt > /dev/null 2>&1; then
     if ! command -v iw > /dev/null 2>&1; then
         apt install -y iw
