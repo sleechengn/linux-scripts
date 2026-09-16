@@ -70,7 +70,7 @@ else
 fi
 PASSWD=""
 if [ ! "$2" ]; then
-    mkdir -p $HOME/.config/wifi
+    
     PFILENAME=$HOME/.config/wifi/$NAME
     DEF_PASSWD=""
     if [ -e "$PFILENAME" ]; then
