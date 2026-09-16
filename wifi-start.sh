@@ -70,8 +70,15 @@ else
 fi
 PASSWD=""
 if [ ! "$2" ]; then
+    mkdir -p $HOME/.config/wifi
+    PFILENAME=$HOME/.config/wifi/$NAME
+    DEF_PASSWD=""
+    if [ -e "$PFILENAME" ]; then
+        DEF_PASSWD=$(< $PFILENAME)
+    fi
+
     PASSWD=$(dialog --title "passwd" \
-                   --inputbox "passwd:" 8 45 "" \
+                   --inputbox "passwd:" 8 45 "$DEF_PASSWD" \
                    3>&1 1>&2 2>&3)
     echo "wifi passwd: $PASSWD"
     if [ ! "$PASSWD" ]; then
@@ -115,6 +122,9 @@ while [ $SETTING_LOOP -eq 1 ] && [ $TRY_COUNT -lt 10 ]; do
             iptables -t nat -A POSTROUTING -j MASQUERADE
         fi
         SETTING_LOOP=0
+        mkdir -p $HOME/.config/wifi
+        PFILENAME=$HOME/.config/wifi/$NAME
+        echo -n "$PASSWD" > $PFILENAME
         exit 0
     else
         sleep 1
