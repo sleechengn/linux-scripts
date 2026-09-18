@@ -50,6 +50,10 @@ if [ ! "$1" ]; then
         while IFS= read -r li; do
             ssids+=("$li" "")
         done < <(iw $IFNAME scan|grep SSID|awk '{print $2}')
+        if [ ${#ssids[@]} -eq 0 ]; then
+            dialog --msgbox "ssid empty" 8 40
+            exit 1
+        fi
         CHOICE=$(dialog --clear \
                     --title "SSID" \
                     --menu "Please select which" 18 99 8 \
@@ -62,8 +66,29 @@ if [ ! "$1" ]; then
             echo "please input ssid"
             exit 1
         fi
-    else
-        exit 1
+    elif [ "$NAME" ] && [ $ERR -eq 0 ]; then
+        killall -9 wpa_supplicant
+        ssids=()
+        ip link set $IFNAME up
+        while IFS= read -r li; do
+            ssids+=("$li" "")
+        done < <(iw $IFNAME scan|grep -F SSID|grep -F "$NAME"|awk '{print $2}')
+        if [ ${#ssids[@]} -eq 0 ]; then
+            dialog --msgbox "ssid empty" 8 40
+            exit 1
+        fi
+        CHOICE=$(dialog --clear \
+                    --title "SSID" \
+                    --menu "Please select which" 18 99 8 \
+                    "${ssids[@]}" 2>&1 >/dev/tty)
+        ERR=$?
+        echo "selected $CHOICE"
+        if [ $ERR -eq 0 ] && [ "$CHOICE" ]; then
+            NAME=$CHOICE
+        else
+            echo "please input ssid"
+            exit 1
+        fi
     fi
 else
     NAME=$1
