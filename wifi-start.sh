@@ -96,7 +96,7 @@ fi
 PASSWD=""
 if [ ! "$2" ]; then
     
-    PFILENAME=$HOME/.config/wifi/$NAME
+    PFILENAME=$HOME/.config/wifi/$(echo -n "$NAME"|md5sum|awk "{print \$1}")
     DEF_PASSWD=""
     if [ -e "$PFILENAME" ]; then
         DEF_PASSWD=$(< $PFILENAME)
@@ -148,7 +148,7 @@ while [ $SETTING_LOOP -eq 1 ] && [ $TRY_COUNT -lt 10 ]; do
         fi
         SETTING_LOOP=0
         mkdir -p $HOME/.config/wifi
-        PFILENAME=$HOME/.config/wifi/$NAME
+        PFILENAME=$HOME/.config/wifi/$(echo -n "$NAME"|md5sum|awk "{print \$1}")
         echo -n "$PASSWD" > $PFILENAME
         exit 0
     else
