@@ -49,7 +49,7 @@ if [ ! "$1" ]; then
         ip link set $IFNAME up
         while IFS= read -r li; do
             ssids+=("$li" "")
-        done < <(iw $IFNAME scan|grep SSID|awk '{print $2}')
+        done < <(iw $IFNAME scan|grep SSID|awk -F '^[[:space:]]*SSID:[[:space:]]*' '{print $2}')
         if [ ${#ssids[@]} -eq 0 ]; then
             dialog --msgbox "ssid empty" 8 40
             exit 1
@@ -72,7 +72,7 @@ if [ ! "$1" ]; then
         ip link set $IFNAME up
         while IFS= read -r li; do
             ssids+=("$li" "")
-        done < <(iw $IFNAME scan|grep -F SSID|grep -F "$NAME"|awk '{print $2}')
+        done < <(iw $IFNAME scan|grep -F SSID|grep -F "$NAME"|awk -F '^[[:space:]]*SSID:[[:space:]]*' '{print $2}')
         if [ ${#ssids[@]} -eq 0 ]; then
             dialog --msgbox "ssid empty" 8 40
             exit 1
@@ -125,7 +125,7 @@ SSID=$NAME
 eval "RSSID=\$'$SSID'"
 SSIDR=$(echo $RSSID|iconv -f gbk -t utf-8)
 echo "SSIDR=$SSIDR"
-wpa_passphrase $RSSID $PASSWD > /tmp/$IFNAME_wpa_supplicant_.conf
+wpa_passphrase "$RSSID" "$PASSWD" > /tmp/$IFNAME_wpa_supplicant_.conf
 wpa_supplicant -B -i $IFNAME -c /tmp/$IFNAME_wpa_supplicant_.conf
 SETTING_LOOP=1
 TRY_COUNT=0
