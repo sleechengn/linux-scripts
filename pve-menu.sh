@@ -2,7 +2,7 @@
 set -x
 
 if [ ! $EUID -eq 0 ]; then
-    dialog --msgbox "please exec root" 8 40
+    dialog --msgbox "please exec script with root" 8 40
     exit 1
 fi
 
