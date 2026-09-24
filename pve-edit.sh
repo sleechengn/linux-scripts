@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+set -x
+
+if [ ! $EUID -eq 0 ]; then
+    dialog --msgbox "please exec script with root" 8 40
+    exit 1
+fi
+
 MENU_OPTIONS=()
 if [ "$(ls -A /etc/pve/qemu-server/)" ]; then
     for file in /etc/pve/qemu-server/*; 
