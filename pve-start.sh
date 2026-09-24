@@ -1,4 +1,11 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
+
+set -x
+
+if ! command -v jq > /dev/null 2>&1; then
+    apt update
+    apt install -y jq
+fi
 
 #VM ID
 VMID=$1
