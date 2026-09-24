@@ -23,7 +23,7 @@ CHOICE=$(dialog --clear \
 clear
 if [ -n "$CHOICE" ]; then
     echo "you select: $CHOICE"
-    qm start $CHOICE
+    nohup qm start $CHOICE > /dev/null 2>&1 &
 else
     echo "bye"
 fi
