@@ -31,7 +31,7 @@ fi
 IFNAME=$(dialog --clear \
                     --title "devices" \
                     --menu "Please select which" 18 99 8 \
-                    "${IFNAMES[@]}" 2>&1 >/dev/tty)
+                    "${IFNAMES[@]}" 4>&1 1>&2 2>&4 4>&-)
 ERR=$?
 if [ ! $ERR -eq 0 ] || [ ! "$IFNAME" ]; then
     exit 1
@@ -57,7 +57,7 @@ if [ ! "$1" ]; then
         CHOICE=$(dialog --clear \
                     --title "SSID" \
                     --menu "Please select which" 18 99 8 \
-                    "${ssids[@]}" 2>&1 >/dev/tty)
+                    "${ssids[@]}" 4>&1 1>&2 2>&4 4>&-)
         ERR=$?
         echo "selected $CHOICE"
         if [ $ERR -eq 0 ] && [ "$CHOICE" ]; then
@@ -80,7 +80,7 @@ if [ ! "$1" ]; then
         CHOICE=$(dialog --clear \
                     --title "SSID" \
                     --menu "Please select which" 18 99 8 \
-                    "${ssids[@]}" 2>&1 >/dev/tty)
+                    "${ssids[@]}" 4>&1 1>&2 2>&4 4>&-)
         ERR=$?
         echo "selected $CHOICE"
         if [ $ERR -eq 0 ] && [ "$CHOICE" ]; then
