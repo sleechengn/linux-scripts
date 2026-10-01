@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -x
-
 if [ ! "$(dpkg -l | grep -F 'open-iscsi')" ]; then
     apt install -y open-iscsi
     systemctl enable --now iscsid
