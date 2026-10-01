@@ -60,7 +60,7 @@ if [ $ERR -eq 0 ] && [ "$OPTION" ]; then
                         echo $blkuuid,$blkfs
                         if [ ! "$(findmnt|grep -F /mnt/$blkuuid)" ]; then
                             if [ ! -e "/mnt/$blkuuid" ]; then mkdir -p /mnt/$blkuuid; fi
-                            mount -t $blkfs -o uid=100000,gui=100000 UUID="$blkuuid" /mnt/$blkuuid
+                            mount -t $blkfs -o uid=100000,gid=100000 UUID="$blkuuid" /mnt/$blkuuid
                         else
                             echo "mounted"
                         fi
