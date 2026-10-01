@@ -38,6 +38,35 @@ if [ $ERR -eq 0 ] && [ "$OPTION" ]; then
     echo $TARGET $PORT $LUN
     iscsiadm -m node -T $TARGET -p $PORT --login
     iscsiadm -m node -T $TARGET -p $PORT -o update -n node.startup -v automatic
+    sleep 1
+    if [ -d "/dev/disk/by-path" ]; then
+        while IFS= read -r line; do
+            DEV=/dev/disk/by-path/$line
+            if [ ! -d "$DEV" ]; then
+                #blkid -s UUID -o value $DEV
+                #blkid -s TYPE -o value $DEV
+                #blkid -s LABEL -o value $DEV
+                #lsblk -dn -o NAME,TYPE,SIZE $DEV
+                #lsblk -dn -o NAME,TYPE,SIZE $DEV
+                #blockdev --getsize64 $DEV
+                #lsblk -dn -o NAME,TYPE,SIZE $DEV
+                BLK_INF=$(lsblk -dn -o NAME,TYPE,SIZE $DEV)
+                blktype=$(echo $BLK_INF|awk '{print $2}')
+                if [ "$blktype" == "part" ]; then
+                    blksize=$(blockdev --getsize64 $DEV)
+                    blkfs=$(blkid -s TYPE -o value $DEV)
+                    blkuuid=$(blkid -s UUID -o value $DEV)
+                    if [ "$blkfs" ]; then
+                        echo $blkuuid,$blkfs
+                        if [ ! "$(findmnt|grep -F /mnt/$blkuuid)" ]; then
+                            if [ ! -e "/mnt/$blkuuid" ]; then mkdir -p /mnt/$blkuuid; fi
+                            mount -t $blkfs UUID="$blkuuid" /mnt/$blkuuid
+                        fi
+                    fi
+                fi
+            fi
+        done < <(ls -A /dev/disk/by-path|grep -F "$TARGET"|grep -F "$PORT")
+    fi
 else
     exit 1
 fi
