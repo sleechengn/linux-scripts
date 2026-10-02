@@ -32,8 +32,8 @@ if [ $ERR -eq 0 ] && [ "$OPTION" ]; then
     PORT=$(echo $OPTION|awk '{print $1}'|awk -F "," '{print $1}')
     LUN=$(echo $OPTION|awk '{print $1}'|awk -F "," '{print $2}')
     #echo $TARGET $PORT $LUN
-    iscsiadm -m node -T $TARGET -p $PORT --login
-    iscsiadm -m node -T $TARGET -p $PORT -o update -n node.startup -v automatic
+    iscsiadm -m node -T $TARGET -p $PORT --login > /dev/null 2>&1
+    iscsiadm -m node -T $TARGET -p $PORT -o update -n node.startup -v automatic > /dev/null 2>&1
     sleep 1
     if [ -d "/dev/disk/by-path" ]; then
         blocks=()
@@ -72,9 +72,10 @@ if [ $ERR -eq 0 ] && [ "$OPTION" ]; then
         if [ $ERR -eq 0 ] && [ "$block" ]; then
             blkuuid=$(echo $block|awk '{print $1}')
             blkfs=$(echo $block|awk '{print $2}')
-            #echo $blkuuid $blkfs
             if [ ! -e "/mnt/$blkuuid" ]; then mkdir -p /mnt/$blkuuid; fi
-            mount -t $blkfs -o uid=100000,umask=022,gid=100000 UUID="$blkuuid" /mnt/$blkuuid
+            if [ ! "$(findmnt|grep -F /mnt/$blkuuid)" ]; then
+                mount -t $blkfs -o uid=100000,umask=022,gid=100000 UUID="$blkuuid" /mnt/$blkuuid
+            fi
         else
             exit 1
         fi
