@@ -59,13 +59,7 @@ if [ $ERR -eq 0 ] && [ "$OPTION" ]; then
                     blkuuid=$(blkid -s UUID -o value $DEV)
                     if [ "$blkfs" ]; then
                         echo $blkuuid,$blkfs
-                        if [ ! "$(findmnt|grep -F /mnt/$blkuuid)" ]; then
-                            #if [ ! -e "/mnt/$blkuuid" ]; then mkdir -p /mnt/$blkuuid; fi
-                            #mount -t $blkfs -o uid=100000,umask=022,gid=100000 UUID="$blkuuid" /mnt/$blkuuid
-                            blocks+=("$blkuuid $blkfs" "")
-                        else
-                            echo "mounted"
-                        fi
+                        blocks+=("$blkuuid $blkfs" "")
                     fi
                 fi
             fi
