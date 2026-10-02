@@ -40,6 +40,7 @@ if [ $ERR -eq 0 ] && [ "$OPTION" ]; then
     iscsiadm -m node -T $TARGET -p $PORT -o update -n node.startup -v automatic
     sleep 1
     if [ -d "/dev/disk/by-path" ]; then
+        blocks=()
         while IFS= read -r line; do
             DEV=/dev/disk/by-path/$line
             if [ ! -d "$DEV" ]; then
@@ -59,8 +60,9 @@ if [ $ERR -eq 0 ] && [ "$OPTION" ]; then
                     if [ "$blkfs" ]; then
                         echo $blkuuid,$blkfs
                         if [ ! "$(findmnt|grep -F /mnt/$blkuuid)" ]; then
-                            if [ ! -e "/mnt/$blkuuid" ]; then mkdir -p /mnt/$blkuuid; fi
-                            mount -t $blkfs -o uid=100000,umask=022,gid=100000 UUID="$blkuuid" /mnt/$blkuuid
+                            #if [ ! -e "/mnt/$blkuuid" ]; then mkdir -p /mnt/$blkuuid; fi
+                            #mount -t $blkfs -o uid=100000,umask=022,gid=100000 UUID="$blkuuid" /mnt/$blkuuid
+                            blocks+=("$blkuuid $blkfs" "")
                         else
                             echo "mounted"
                         fi
@@ -68,6 +70,24 @@ if [ $ERR -eq 0 ] && [ "$OPTION" ]; then
                 fi
             fi
         done < <(ls -A /dev/disk/by-path|grep -F "$TARGET"|grep -F "$PORT")
+        if [ ${#blocks[@]} -eq 0 ]; then
+            dialog --msgbox "not found" 8 40
+            exit 1
+        fi
+
+        block=$(dialog --clear \
+                            --title "device" \
+                            --menu "Please select which" 18 99 8 \
+                            "${blocks[@]}" 4>&1 1>&2 2>&4 4>&-)
+        ERR=$?
+        if [ $ERR -eq 0 ] && [ "$block" ]; then
+            blkuuid=$(echo $block|awk '{print $1}')
+            blkfs=$(echo $block|awk '{print $2}')
+            if [ ! -e "/mnt/$blkuuid" ]; then mkdir -p /mnt/$blkuuid; fi
+            mount -t $blkfs -o uid=100000,umask=022,gid=100000 UUID="$blkuuid" /mnt/$blkuuid
+        else
+            exit 1
+        fi
     fi
 else
     exit 1
