@@ -55,7 +55,7 @@ if [ $ERR -eq 0 ] && [ "$OPTION" ]; then
                     blkuuid=$(blkid -s UUID -o value $DEV)
                     if [ "$blkfs" ]; then
                         #echo $blkuuid,$blkfs
-                        blocks+=("$blkuuid $blkfs $blksize" "UUID=$blkuuid TYPE=$blkfs SIZE=$blksize")
+                        blocks+=("$blkuuid $blkfs $blksize" "")
                     fi
                 fi
             fi
