@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -x
-
 if [ ! "$(dpkg -l | grep -F 'open-iscsi')" ]; then
     apt install -y open-iscsi
     systemctl enable --now iscsid
@@ -18,7 +17,6 @@ while IFS= read -r line; do
     echo $line
     OPTIONS+=("$line" "")
 done < <(iscsiadm -m discovery -t sendtargets -p $1)
-
 if [ ${#OPTIONS[@]} -eq 0 ]; then
     dialog --msgbox "not found" 8 40
     exit 1
