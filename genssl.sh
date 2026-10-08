@@ -97,6 +97,7 @@ fi
 #10 Generate Server pem
 if [ ! -e "$ServerCN.crt" ]; then
     if [ ! -e "$ServerCN.ext" ]; then
+        if [ "$(echo $ServerCN|grep '\d+\.\d+\.\d+\.\d+')" ]; then
 cat > $ServerCN.ext <<EOF
 [v3_server]
 authorityKeyIdentifier=keyid,issuer
@@ -106,6 +107,18 @@ subjectAltName=@alt_names
 [alt_names]
 IP.1 = $ServerCN
 EOF
+        else
+cat > $ServerCN.ext <<EOF
+[v3_server]
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage=digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName=@alt_names
+[alt_names]
+DNS.1 = $ServerCN
+EOF
+        fi
+
     fi
     openssl x509 -req -extfile $ServerCN.ext -extensions v3_server -days 36500 -sha256 -CA lan-chain-sign.crt -CAkey lan-chain-sign.key -CAserial serial -in $ServerCN.csr -out $ServerCN.crt
     #openssl x509 -sha256 -req -extfile $ServerCN.ext -extensions v3_server -days 3650 -in $ServerCN.csr -CA lan-chain-sign.crt -CAkey lan-chain-sign.key -CAcreateserial -out $ServerCN-serial.crt
