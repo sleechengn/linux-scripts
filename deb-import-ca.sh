@@ -8,7 +8,6 @@ if [ "$1" ]; then
         sudo cp $1 /usr/local/share/ca-certificates/
         sudo update-ca-certificates
     fi
-    
 else
     echo "usage: ./deb-import-ca.sh [path/to/crt]"
 fi
