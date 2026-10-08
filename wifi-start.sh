@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 set -x
+if [ ! $EUID -eq 0 ]; then
+    if command -v sudo > /dev/null 2>&1; then
+        sudo $0
+    else
+        exit 1
+    fi
+fi
 if command -v apt > /dev/null 2>&1; then
     if ! command -v iw > /dev/null 2>&1; then
         apt install -y iw
