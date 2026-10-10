@@ -11,5 +11,5 @@ if [ "$1" ] && [ "$2" ] && [ "$3" ] && [ "$4" ]; then
     ffmpeg -ss $1 -to $2 -accurate_seek -i $3 -c:a mp3 -c:v h264 -crf 18 -f mp4 $4
 else
     echo "参数错误"
-    echo <start> <end> <file> <file>
+    echo "<start> <end> <file> <file>"
 fi
