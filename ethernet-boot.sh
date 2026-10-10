@@ -16,6 +16,14 @@ if ! command -v iptables > /dev/null 2>&1; then
                 pacman -S --noconfirm iptables
         fi
 fi
+if ! command -v dhclient > /dev/null 2>&1; then
+        if command -v apt > /dev/null 2>&1; then
+                apt install -y isc-dhcp-client
+        fi
+        if command -v pacman > /dev/null 2>&1; then
+                pacman -S --noconfirm dhclient
+        fi
+fi
 IFNAME=""
 if [ "$1" ]; then
         IFNAME="$1"
