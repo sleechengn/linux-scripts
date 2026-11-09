@@ -20,16 +20,13 @@ set -g default-command fish
 EOF
         tmux source ~/.tmux.conf
         fi
-
         if [ "$(tmux ls|grep '^default.*')" ]; then
                 tmux a -t default
         else
                 tmux new -s default
         fi
-
         if [ $(id -u $(whoami)) -eq 0 ] && [ ! -e "/usr/bin/t" ] ; then
                 cp $0 /usr/bin/t
                 chmod 755 /usr/bin/t
         fi
-
 fi
