@@ -1,24 +1,17 @@
 #!/usr/bin/env bash
-
-if [ ! "$(which tmux)" ]; then
-
-        if [ "$(which apt)" ]; then
+set -x
+if ! command -v tmux > /dev/null 2>&1; then
+        if command -v apt > /dev/null 2>&1; then
                 apt install -y tmux fish
+        elif command -v apk > /dev/null 2>&1; then
+                apk add tmux fish
+        elif command -v pacman > /dev/null 2>&1; then
+                pacman --noconfirm -Sy fish tmux
         else
-                if [ "$(which apk)" ]; then
-                        apk add tmux fish
-                else
-                        if [ "$(which pacman)" ]; then
-                                pacman --noconfirm -Sy fish tmux
-                        else
-                                exit 1
-                        fi
-                fi
+                exit 1
         fi
 fi
-
-if [ "$(which tmux)" ]; then
-
+if command -v tmux > /dev/null 2>&1; then
         if [ ! -e "~/.tmux.conf" ]; then
 cat > ~/.tmux.conf <<EOF
 set -g mouse on
@@ -40,5 +33,3 @@ EOF
         fi
 
 fi
-
-
