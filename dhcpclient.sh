@@ -9,6 +9,7 @@ if [ ! $EUID -eq 0 ]; then
                 if command -v pacman > /dev/null 2>&1; then
                         pacman -Sy --noconfirm sudo
                 fi
+                echo "setup sudo but need you to write set"
         else
                 sudo $0
         fi
