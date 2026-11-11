@@ -139,6 +139,11 @@ niri-session
 ./qcow2compress.sh <源> <目标>
 ```
 
+### qcow2虚拟磁盘格式到raw虚拟磁盘格式
+```
+./qcow2raw.sh <源> <目标>
+```
+
 ### qcow2转vhd
 ```
 ./qcow2vpc.sh <源> <目标>
