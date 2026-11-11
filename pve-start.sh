@@ -3,8 +3,16 @@
 set -x
 
 if ! command -v jq > /dev/null 2>&1; then
-    apt update
-    apt install -y jq
+    if [ $EUID -eq 0 ]; then
+        apt update
+        apt install -y jq
+    else
+        if command -v sudo >/dev/null 2>&1; then
+            sudo $0 $*
+        else
+            exit 99
+        fi
+    fi
 fi
 
 #VM ID
