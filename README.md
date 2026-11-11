@@ -76,7 +76,7 @@ niri-session
 
 ### 自动登录以太网卡
 ```
-./ethernet-boot.sh [网卡名]
+./dhcpclient.sh [网卡名]
 # 缺省选择网卡(手动)
 ```
 
