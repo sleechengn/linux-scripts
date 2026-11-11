@@ -3,10 +3,11 @@ set -ex
 if [ ! $EUID -eq 0 ]; then
         if ! command -v sudo > /dev/null 2>&1; then
                 if command -v apt > /dev/null 2>&1; then
+                        apt update
                         apt install -y sudo
                 fi
                 if command -v pacman > /dev/null 2>&1; then
-                        pacman -S --noconfirm sudo
+                        pacman -Sy --noconfirm sudo
                 fi
         else
                 sudo $0
@@ -14,26 +15,29 @@ if [ ! $EUID -eq 0 ]; then
 else
         if ! command -v dialog > /dev/null 2>&1; then
                 if command -v apt > /dev/null 2>&1; then
+                        apt update
                         apt install -y dialog
                 fi
                 if command -v pacman > /dev/null 2>&1; then
-                        pacman -S --noconfirm dialog
+                        pacman -Sy --noconfirm dialog
                 fi
         fi
         if ! command -v iptables > /dev/null 2>&1; then
                 if command -v apt > /dev/null 2>&1; then
+                        apt update
                         apt install -y iptables
                 fi
                 if command -v pacman > /dev/null 2>&1; then
-                        pacman -S --noconfirm iptables
+                        pacman -Sy --noconfirm iptables
                 fi
         fi
         if ! command -v dhclient > /dev/null 2>&1; then
                 if command -v apt > /dev/null 2>&1; then
+                        apt update
                         apt install -y isc-dhcp-client
                 fi
                 if command -v pacman > /dev/null 2>&1; then
-                        pacman -S --noconfirm dhclient
+                        pacman -Sy --noconfirm dhclient
                 fi
         fi
         IFNAME=""
@@ -59,9 +63,12 @@ else
                         exit 1
                 fi
         fi
-        if [ ! "$(which ethtool)" ]; then
-                if [ "$(which apt)" ]; then
+        if ! command -v ethtool > /dev/null 2>&1; then
+                if command -v apt > /dev/null 2>&1; then
                         apt install -y ethtool
+                fi
+                if command -v pacman > /dev/null 2>&1; then
+                        pacman -Syy --noconfirm ethtool
                 fi
         fi
         if [ "$(ip a|grep $IFNAME)" ] && [ "$(which ethtool)" ]; then
