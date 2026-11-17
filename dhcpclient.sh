@@ -83,7 +83,7 @@ else
                                         iptables -t nat -A POSTROUTING -j MASQUERADE
                                 fi
                         else
-                                echo dynamic address detect
+                                echo dynamic address detect, run $(dirname $0)/ip-manage.sh del it
                         fi
                 fi
         else
