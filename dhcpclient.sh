@@ -76,12 +76,14 @@ else
                 ip link set $IFNAME up
                 if [ "$(ethtool $IFNAME|grep Link|grep detected|grep yes)" ]; then
                         echo "$IFNAME activate"
-                        if [ ! "$(ip a|grep -F inet|grep -F $IFNAME)" ]; then
+                        if [ ! "$(ip a|grep -F inet|grep -F $IFNAME|grep -F dynamic)" ]; then
                                 dhclient $IFNAME > /dev/null 2>&1 &
                                 echo 1 > /proc/sys/net/ipv4/ip_forward
                                 if [ ! "$(iptables -t nat -nvL --line-numbers|grep MASQUERADE)" ]; then
                                         iptables -t nat -A POSTROUTING -j MASQUERADE
                                 fi
+                        else
+                                echo dynamic address detect
                         fi
                 fi
         else
