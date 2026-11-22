@@ -1,4 +1,4 @@
-#!/usr/bin/env  bash
+#!/usr/bin/env bash
 set -x
 
 mkdir $(dirname  $0)/output
@@ -6,7 +6,7 @@ listFile=$(mktemp)
 list=()
 while IFS= read -r file;  do
 	list+=( "$(realpath $file)" )
-done < <(find $(dirname  $0)  -type  f|grep  -v  output|grep  "\\.mp4\$")
+done < <(find $(dirname  $0)  -type  f|grep  -v  output|grep -E -e "\\.mp4\$" -e "\\.mov\$")
 
 for  file in  ${list[@]};  do
 	outputFile="$(realpath $(dirname $0)/output/$(basename  $file))"
