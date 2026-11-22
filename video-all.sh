@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -x
 
-mkdir $(dirname  $0)/output
+mkdir -p $(dirname  $0)/output
 listFile=$(mktemp)
 list=()
 while IFS= read -r file;  do
