@@ -19,5 +19,5 @@ for  file in  ${list[@]};  do
 	echo "file '$outputFile'" >> $listFile
 done
 cat $listFile
-ffmpeg -f concat -safe 0 -i $listFile -vf scale=1920:1080 -c:v libx264 -af "aresample=async=1:first_pts=0" -c:a aac $(dirname $0)/output/output.mp4
+ffmpeg -f concat -safe 0 -i $listFile -c copy $(dirname $0)/output/output.mp4
 rm -rf $listFile
